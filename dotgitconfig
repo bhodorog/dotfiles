@@ -1,11 +1,16 @@
 [alias]
-gr = log --graph --full-history --color --pretty=tformat:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s%x20%x1b[33m(%an)%x1b[0m%x20%x1b[34m[%cr%x20%x1b[36m%cd]"
-co = checkout
-st = status
-difrev = diff --color --cached
-menf = merge --no-ff --no-commit
+    gr = log --graph --full-history --color --pretty=tformat:"%x1b[31m%h%x09%x1b[32m%d%x1b[33m{%an}%x1b[0m%x20%s%x20%x1b[0m%x20%x1b[34m[%cr%x20%x1b[36m%cd]"
+    co = checkout
+    st = status
+    difrev = diff --color --cached
+    menf = merge --no-ff --no-commit
+    ci = commit
+    ch-since = --no-pager log --since="2012-08-20" --no-merges --name-only --pretty=format:
+    serve = git daemon --reuseaddr --base-path=. --export-all --verbose
 
 [core]
-	excludesfile = /Users/bhodorog/.gitignore
+    excludesfile = /Users/bhodorog/.gitignore
 [user]
-	email = bogdan.hodorog@threepillarglobal.com
+    email = bogdan.hodorog@threepillarglobal.com
+[color]
+    ui = auto
