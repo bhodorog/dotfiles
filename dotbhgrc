@@ -1,0 +1,32 @@
+export WORKON_HOME=~/Work/virtenv
+export PATH=$PATH:/usr/local/sbin:~/Bin:/usr/local/Cellar/smlnj/110.75/libexec/bin
+source /usr/local/bin/virtualenvwrapper.sh
+
+alias ls='ls -G'
+alias tree='tree -C'
+alias ackl='ack --pager "less -R"'
+alias vim=/usr/local/bin/vim
+alias vi=vim
+
+if [ -f `brew --prefix`/etc/bash_completion.d ]; then
+	. `brew --prefix`/etc/bash_completion.d
+fi
+
+# append history rather than rewrite
+#shopt -s histappend
+#PROMPT_COMMAND='history -a'
+
+if [ -f .awsrc ]; then
+        source .awsrc
+fi
+
+function _r(){
+    local OLD_DIR=$(pwd)
+    local NEW_DIR=$1
+    echo $OLD_DIR/$NEW_DIR
+    cd $NEW_DIR
+    shift
+    $@
+    cd $OLD_DIR
+}
+
