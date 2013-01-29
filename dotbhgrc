@@ -30,3 +30,21 @@ function _r(){
     cd $OLD_DIR
 }
 
+function rel_notes_last_tag(){
+    for p in $@;
+        do cd $p;
+        echo; echo; echo $(basename $(pwd));
+        git --no-pager log --pretty=format:%s $(git describe --tags --abbrev=0)..HEAD ;
+        cd -; done | grep -o -P 'LUN-\d\d\d' | uniq | sed 's/\(.*\)/{JIRA: &}/'
+}
+
+function rel_notes_since(){
+    local DEFAULT="2000-1-1 0:0"
+    local _SINCE="${1-$DEFAULT}"
+    shift
+    for p in $@;
+        do cd $p;
+        echo; echo; echo $(basename $(pwd));
+        git --no-pager log --pretty=format:%s --since="$_SINCE";
+        cd -; done | grep -o -P 'LUN-\d\d\d' | uniq | sed 's/\(.*\)/{JIRA: &}/'
+}
