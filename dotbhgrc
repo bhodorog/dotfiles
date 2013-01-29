@@ -31,14 +31,18 @@ function _r(){
 }
 
 function rel_notes_last_tag(){
+    local _PATTERN_DEFAULT='LUN-\d\d\d'
+    local _PATTERN=${PATTERN-$_PATTERN_DEFAULT}
     for p in $@;
         do cd $p;
         echo; echo; echo $(basename $(pwd));
         git --no-pager log --pretty=format:%s $(git describe --tags --abbrev=0)..HEAD ;
-        cd -; done | grep -o -P 'LUN-\d\d\d' | uniq | sed 's/\(.*\)/{JIRA: &}/'
+        cd -; done | grep -o -P $_PATTERN | uniq | sed 's/\(.*\)/{JIRA: &}/'
 }
 
 function rel_notes_since(){
+    local _PATTERN_DEFAULT='LUN-\d\d\d'
+    local _PATTERN=${PATTERN-$_PATTERN_DEFAULT}
     local DEFAULT="2000-1-1 0:0"
     local _SINCE="${1-$DEFAULT}"
     shift
@@ -46,5 +50,5 @@ function rel_notes_since(){
         do cd $p;
         echo; echo; echo $(basename $(pwd));
         git --no-pager log --pretty=format:%s --since="$_SINCE";
-        cd -; done | grep -o -P 'LUN-\d\d\d' | uniq | sed 's/\(.*\)/{JIRA: &}/'
+        cd -; done | grep -o -P $_PATTERN | uniq | sed 's/\(.*\)/{JIRA: &}/'
 }
