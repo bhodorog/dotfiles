@@ -1,54 +1,45 @@
-export WORKON_HOME=~/Work/virtenv
-export PATH=$PATH:/usr/local/sbin:~/Bin:/usr/local/Cellar/smlnj/110.75/libexec/bin
-source /usr/local/bin/virtualenvwrapper.sh
+function _bhg_source_if_exists {
+    [[ -f $1 ]] && source $1
+}
+_bhg_source_if_exists $(brew --prefix)/etc/bash_completion
+_bhg_source_if_exists $(brew --prefix)/etc/bash_completion.d/git-prompt.sh
+_bhg_source_if_exists $(brew --prefix)/etc/bash_completion.d/git-completion.sh
 
+
+_VEWRAPPER=/usr/local/bin/virtualenvwrapper.sh
+[[ -f $_VEWRAPPER ]] && source $_VEWRAPPER
+export WORKON_HOME=~/Work/virtenv
+
+# customize PS1
+function _bhg_color_ps1 {
+    local RESET="\[\033[0;00m\]"
+    local BLACK="\[\033[0;30m\]"
+    local RED="\[\033[0;31m\]"
+    local GREEN="\[\033[0;32m\]"
+    local BLUE="\[\033[0;34m\]"
+    local CYAN="\[\033[0;36m\]"
+    local GRAY="\[\033[0;37m\]"
+    local WHITE_BOLD="\[\033[1;37m\]"
+    export PS1='[\u@\h \W$(__git_ps1 " (%s)")]\$ '
+    export PS1='\[\033[32m\]\u@\h\[\033[00m\]:\[\033[34m\]\w\[\033[31m\]$(__git_ps1)\[\033[00m\]\$ '
+    export PS1="${GREEN}\u@\h${RESET}:${BLUE}\w${RED}"'$(__git_ps1)'"${RESET}\n> "
+}
+_bhg_color_ps1
+
+# source specific configs
+[[ -f .bhg.d/.localrc ]] && source .bhglocalrc
+[[ -f .bhg.d/.funcrc ]] && source .bhgfuncrc
+
+function _add_2_path {
+    [[ -d $1 ]] && export PATH=$PATH:$1
+}
+
+_add_2_path /usr/local/sbin
+_add_2_path ~/Bin
+_add_2_path /usr/local/Cellar/smlnj/110.75/libexec/bin
+
+# aliases
 alias ls='ls -G'
 alias tree='tree -C'
 alias ackl='ack --pager "less -R"'
-alias vim=/usr/local/bin/vim
 alias vi=vim
-
-if [ -f `brew --prefix`/etc/bash_completion.d ]; then
-	. `brew --prefix`/etc/bash_completion.d
-fi
-
-# append history rather than rewrite
-#shopt -s histappend
-#PROMPT_COMMAND='history -a'
-
-if [ -f .awsrc ]; then
-        source .awsrc
-fi
-
-function _r(){
-    local OLD_DIR=$(pwd)
-    local NEW_DIR=$1
-    echo $OLD_DIR/$NEW_DIR
-    cd $NEW_DIR
-    shift
-    $@
-    cd $OLD_DIR
-}
-
-function rel_notes_last_tag(){
-    local _PATTERN_DEFAULT='LUN-\d\d\d'
-    local _PATTERN=${PATTERN-$_PATTERN_DEFAULT}
-    for p in $@;
-        do cd $p;
-        echo; echo; echo $(basename $(pwd));
-        git --no-pager log --pretty=format:%s $(git describe --tags --abbrev=0)..HEAD ;
-        cd -; done | grep -o -P $_PATTERN | uniq | sed 's/\(.*\)/{JIRA: &}/'
-}
-
-function rel_notes_since(){
-    local _PATTERN_DEFAULT='LUN-\d\d\d'
-    local _PATTERN=${PATTERN-$_PATTERN_DEFAULT}
-    local DEFAULT="2000-1-1 0:0"
-    local _SINCE="${1-$DEFAULT}"
-    shift
-    for p in $@;
-        do cd $p;
-        echo; echo; echo $(basename $(pwd));
-        git --no-pager log --pretty=format:%s --since="$_SINCE";
-        cd -; done | grep -o -P $_PATTERN | uniq | sed 's/\(.*\)/{JIRA: &}/'
-}
