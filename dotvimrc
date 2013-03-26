@@ -64,3 +64,5 @@ nnoremap k gk
 nnoremap <F1> <ESC>
 inoremap <F1> <ESC>
 vnoremap <F1> <ESC>
+
+nnoremap <leader>a :Ack
