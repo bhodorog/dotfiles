@@ -1,11 +1,12 @@
 " enable pathogen
 filetype off
-call pathogen#runtime_append_all_bundles()
+runtime bundle/vim-pathogen/autoload/pathogen.vim
+call pathogen#incubate()
 filetype plugin indent on
 
 set nocompatible " don't use old vi defaults
 
-inoremap jk <Esc> " Esc is simply to far
+inoremap jj <Esc> " Esc is simply to far
 
 " tabs needs to be set
 set tabstop=4
