@@ -13,7 +13,8 @@
     excludesfile = /Users/bhodorog/.gitignore
     editor = /usr/local/bin/vim
 [user]
-    email = bogdan.hodorog@threepillarglobal.com
+	email = bogdan.hodorog@3pillarglobal.com
+	name = Bogdan Hodorog
 [color]
     ui = auto
 [log]
