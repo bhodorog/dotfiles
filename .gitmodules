@@ -1,0 +1,15 @@
+[submodule "dotvim/bundle/command-t"]
+	path = dotvim/bundle/command-t
+	url = git://git.wincent.com/command-t.git
+[submodule "dotvim/bundle/nerdtree"]
+	path = dotvim/bundle/nerdtree
+	url = https://github.com/scrooloose/nerdtree.git
+[submodule "dotvim/bundle/ack"]
+	path = dotvim/bundle/ack
+	url = https://github.com/mileszs/ack.vim
+[submodule "dotvim/bundle/snipmate"]
+	path = dotvim/bundle/snipmate
+	url = https://github.com/msanders/snipmate.vim
+[submodule "dotvim/bundle/solarized"]
+	path = dotvim/bundle/solarized
+	url = https://github.com/altercation/vim-colors-solarized
