@@ -35,12 +35,7 @@
           (lambda()
             (interactive) (column-marker-2 79)
             (interactive) (column-marker-1 80)
-            (setq show-trailing-whitespace t)
-            (autopair-mode t)
-            (yas-minor-mode t)
-            (which-function-mode 1)
-            (outline-minor-mode t)
-            (setq coding-system-for-write 'utf-8)))
+            ))
 
 (require 'jedi)
 ;; It's also required to run "pip install --user jedi" and "pip
@@ -57,7 +52,14 @@
 	    (jedi:ac-setup)
             (local-set-key "\C-cd" 'jedi:show-doc)
             (local-set-key (kbd "M-SPC") 'jedi:complete)
-            (local-set-key (kbd "M-.") 'jedi:goto-definition)))
+            (local-set-key (kbd "M-.") 'jedi:goto-definition)
+            (setq show-trailing-whitespace t)
+            (autopair-mode t)
+            (yas-minor-mode t)
+            (which-function-mode 1)
+            (outline-minor-mode t)
+            (setq coding-system-for-write 'utf-8)
+            ))
 
 ;; Flymake settings for Python
 (defun flymake-python-init ()
