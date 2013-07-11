@@ -16,8 +16,6 @@ alias tree='tree -C'
 alias ackl='ack --pager "less -R"'
 alias vim=/usr/local/bin/vim
 alias vi=vim
-alias emacsserverclose="emacsclient -e '(kill-emacs)'"
-alias emc="emacsclient -nw"
 
 _VEWRAPPER=/usr/local/bin/virtualenvwrapper.sh
 [[ -f $_VEWRAPPER ]] && source $_VEWRAPPER
@@ -41,11 +39,7 @@ _bhg_color_ps1
 CDPATH+='.:~/Work/repos/personal:~/Work/repos/pbs/hostedbento/bento'
 # append history rather than rewrite
 shopt -s histappend
-PROMPT_COMMAND="history -a;history -c;history -r;$PROMPT_COMMAND"
-HISTSIZE=10000
-
-# don't ignore lines commented with '#' char
-shopt -u interactive_comments
+PROMPT_COMMAND='history -a'
 
 # source specific configs
 [[ -f .bhg.d/.localrc ]] && source .bhglocalrc

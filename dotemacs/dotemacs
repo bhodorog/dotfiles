@@ -127,6 +127,5 @@
 (cua-selection-mode t)
 (setq-default indent-tabs-mode nil)
 (visual-line-mode t)
-(scroll-bar-mode nil)
 (tool-bar-mode nil)
 (menu-bar-mode -1)
