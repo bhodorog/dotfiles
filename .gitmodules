@@ -13,3 +13,6 @@
 [submodule "dotvim/bundle/solarized"]
 	path = dotvim/bundle/solarized
 	url = https://github.com/altercation/vim-colors-solarized
+[submodule "dotvim/bundle/vim-pathogen"]
+	path = dotvim/bundle/vim-pathogen
+	url = git://github.com/tpope/vim-pathogen.git
