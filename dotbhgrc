@@ -1,25 +1,20 @@
+alias ls='ls -G'
+alias tree='tree -C'
+alias ackl='ack --pager "less -R"'
+alias vim=/usr/local/bin/vim
+alias vi=vim
+alias emc='emacsclient -nw'
+
+# append history rather than rewrite
+shopt -s histappend
+PROMPT_COMMAND='history -a'
+
 function _bhg_source_if_exists {
     [[ -f $1 ]] && source $1
 }
 _bhg_source_if_exists $(brew --prefix)/etc/bash_completion
 _bhg_source_if_exists $(brew --prefix)/etc/bash_completion.d/git-prompt.sh
 _bhg_source_if_exists $(brew --prefix)/etc/bash_completion.d/git-completion.sh
-
-export WORKON_HOME=~/Work/virtenv
-export PATH=/usr/local/opt/ruby/bin:$PATH:/usr/local/sbin:~/Bin:/usr/local/Cellar/smlnj/110.75/libexec/bin:/usr/local/bin
-source /usr/local/bin/virtualenvwrapper.sh
-
-#set -o vi
-
-alias ls='ls -G'
-alias tree='tree -C'
-alias ackl='ack --pager "less -R"'
-alias vim=/usr/local/bin/vim
-alias vi=vim
-
-_VEWRAPPER=/usr/local/bin/virtualenvwrapper.sh
-[[ -f $_VEWRAPPER ]] && source $_VEWRAPPER
-export WORKON_HOME=~/Work/virtenv
 
 # customize PS1
 function _bhg_color_ps1 {
@@ -35,27 +30,10 @@ function _bhg_color_ps1 {
     export PS1='\[\033[32m\]\u@\h\[\033[00m\]:\[\033[34m\]\w\[\033[31m\]$(__git_ps1)\[\033[00m\]\$ '
     export PS1="${BLUE}\u@\h${RESET}:${GREEN}\w${RED}"'$(__git_ps1)'"${RESET}\n\$ "
 }
+
 _bhg_color_ps1
-CDPATH+='.:~/Work/repos/personal:~/Work/repos/pbs/hostedbento/bento'
-# append history rather than rewrite
-shopt -s histappend
-PROMPT_COMMAND='history -a'
 
 # source specific configs
 [[ -f .bhg.d/.localrc ]] && source .bhglocalrc
 [[ -f .bhg.d/.funcrc ]] && source .bhgfuncrc
-
-function _add_2_path {
-    [[ -d $1 ]] && export PATH=$PATH:$1
-}
-
-_add_2_path /usr/local/sbin
-_add_2_path ~/Bin
-_add_2_path /usr/local/Cellar/smlnj/110.75/libexec/bin
-
-# aliases
-alias ls='ls -G'
-alias tree='tree -C'
-alias ackl='ack --pager "less -R"'
-alias vi=vim
 
