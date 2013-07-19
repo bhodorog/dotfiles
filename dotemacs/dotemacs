@@ -125,7 +125,25 @@
 (delete-selection-mode nil)
 (setq inhibit-splash-screen -1)
 (cua-selection-mode t)
-(setq-default indent-tabs-mode nil)
+(setq-default indent-tabs-mode nil)   ;; Don't use tabs to indent
+(setq tab-width 4)                    ;; Still if tabs are enabled make sure they're consistent
+(defvaralias 'c-basic-offset 'tab-width) ;; Override the default
+(defvaralias 'cperl-indent-level 'tab-width) ;; Override the default
 (visual-line-mode t)
 (tool-bar-mode nil)
-(menu-bar-mode -1)
+(menu-bar-mode -1)                    ;; Disable menu bar, make space on the screen
+(defalias 'yes-or-no-p 'y-or-n-p)     ;; Use y-n instead of verbose yes-no
+(require 'uniquify)                   ;; Differentiate among buffers with the same name
+(setq
+ uniquify-buffer-name-style 'post-forward
+ uniquify-separator ":")
+
+(setq version-control t               ;; Use version numbers for backups
+      kept-new-versions 16            ;; Number of newest versions to keep
+      kept-old-versions 2             ;; Number of oldest versions to keep
+      delete-old-versions t           ;; Ask to delete excess backup versions?
+      backup-by-copying-when-linked t ;; Copy linked files, don't rename.
+      backup-by-copying t             ;; Don't clobber symlinks
+      backup-directory-alist
+      '(("." . "~/.saves")))          ;; Don't litter my fs tree
+
