@@ -1,3 +1,7 @@
+; automatically switch to lisp-mode for given files
+(setq auto-mode-alist (cons '("dotemacs" . lisp-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("emacscustom" . lisp-mode) auto-mode-alist))
+
 ;; Prerequisite: Emacs >= 24
 (require 'package)
 (package-initialize)
@@ -98,6 +102,12 @@
 
 (global-set-key [(meta /)] 'dabbrev-expand)
 (global-set-key [(control /)] 'hippie-expand)
+;; toggle showing whitespace globally
+(global-set-key (kbd "\C-c \C-w")
+                (lambda ()
+                  (interactive)
+                  (setq show-trailing-whitespace
+                        (not show-trailing-whitespace))))
 
 ; Shortening of often used commands
 (defalias 'gf 'grep-find)
@@ -110,7 +120,7 @@
 (defalias 'rof 'recentf-open-files)
 
 (defalias 'eb 'eval-buffer)
-2(defalias 'er 'eval-region)
+(defalias 'er 'eval-region)
 
 (defalias 'hr 'highlight-regexp)
 (defalias 'ur 'unhighlight-regexp)
