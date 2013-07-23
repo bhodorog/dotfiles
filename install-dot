@@ -1,0 +1,14 @@
+#!/bin/bash
+
+REPO_DIR="$( cd "$( dirname "$(readlink -f $0)" )" && pwd )"
+echo $REPO_DIR
+
+cd
+ln -s $REPO_DIR/dotbhgrc .bhgrc
+ln -s $REPO_DIR/dotgitconfig .gitconfig
+ln -s $REPO_DIR/dotemacs/dotemacs .emacs
+ln -s $REPO_DIR/dotemacs/epylint .epylint
+ln -s $REPO_DIR/epylint .epylint
+ln -s $REPO_DIR/dotvim .vim
+ln -s $REPO_DIR/dotvimrc .vimrc
+

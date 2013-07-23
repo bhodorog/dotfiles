@@ -72,7 +72,7 @@
          (local-file (file-relative-name
                       temp-file
                       (file-name-directory buffer-file-name))))
-    (list "epylint" (list local-file))))
+    (list "~/.epylint" (list local-file))))
 
 (defun flymake-activate ()
   "Activates flymake when real buffer and you have write access"
