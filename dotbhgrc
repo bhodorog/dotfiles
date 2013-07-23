@@ -37,6 +37,7 @@ function _bhg_color_ps1 {
 _bhg_color_ps1
 
 # source specific configs
-[[ -a .bhglocalrc ]] && source .bhglocalrc
-[[ -a .bhgfuncrc ]] && source .bhgfuncrc
+_bhg_source_if_exists ~/.bhglocalrc
+_bhg_source_if_exists ~/.bhgfuncrc
+
 

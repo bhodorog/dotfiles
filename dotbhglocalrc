@@ -16,6 +16,11 @@ function _add_2_path {
     [[ -d $1 ]] && export PATH=$PATH:$1
 }
 
+function _prepend_2_path {
+    [[ -d $1 ]] && export PATH=$1:$PATH
+}
+
+_prepend_2_path /usr/local/bin
 _add_2_path /usr/local/opt/ruby/bin
 _add_2_path /usr/local/sbin
 _add_2_path ~/Bin
