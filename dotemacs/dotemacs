@@ -18,7 +18,7 @@
 
 ;; make more packages available with the package installer
 (setq to-install
-      '(magit yasnippet jedi auto-complete autopair find-file-in-repository))
+      '(magit yasnippet jedi auto-complete autopair find-file-in-repository column-marker))
 
 (mapc 'install-if-needed to-install)
 
@@ -26,6 +26,7 @@
 (require 'auto-complete)
 (require 'flymake)
 (require 'yasnippet)
+(require 'column-marker)
 
 ; auto-complete mode extra settings
 (setq
@@ -33,13 +34,6 @@
  ac-override-local-map nil
  ac-use-menu-map t
  ac-candidate-limit 20)
-
-; python.el settings
-(add-hook 'python-mode-hook
-          (lambda()
-            (interactive) (column-marker-2 79)
-            (interactive) (column-marker-1 80)
-            ))
 
 (require 'jedi)
 ;; It's also required to run "pip install --user jedi" and "pip
@@ -49,7 +43,7 @@
 
 ;; if you need to change your python intepreter, if you want to change it
 ;; (setq jedi:server-command
-;;       '("python2" "/home/andrea/.emacs.d/elpa/jedi-0.1.2/jediepcserver.py"))
+;;       '("python2" "/path/to/.emacs.d/elpa/jedi-0.1.2/jediepcserver.py"))
 (add-hook 'python-mode-hook
 	  (lambda ()
 	    (jedi:setup)
@@ -63,6 +57,9 @@
             (which-function-mode 1)
             (outline-minor-mode t)
             (setq coding-system-for-write 'utf-8)
+            (setq fill-column 79)
+            (column-marker-1 79)
+            (column-marker-2 80)
             ))
 
 ;; Flymake settings for Python
@@ -142,6 +139,7 @@
 (visual-line-mode t)
 (tool-bar-mode nil)
 (menu-bar-mode -1)                    ;; Disable menu bar, make space on the screen
+(ido-mode 1)
 (defalias 'yes-or-no-p 'y-or-n-p)     ;; Use y-n instead of verbose yes-no
 (require 'uniquify)                   ;; Differentiate among buffers with the same name
 (setq
