@@ -1,14 +1,18 @@
 #!/bin/bash
 
+# requirements are listed inline with the command which requires it. You can grep the file after -oP '(?<=req: ).*' to install the requirements
+
+
 REPO_DIR="$( cd "$( dirname "$(readlink -f $0)" )" && pwd )"
 echo $REPO_DIR
 
 cd
 ln -s $REPO_DIR/dotbhgrc .bhgrc
 ln -s $REPO_DIR/dotgitconfig .gitconfig
+# install emacs stuff
 ln -s $REPO_DIR/dotemacs/dotemacs .emacs
-ln -s $REPO_DIR/dotemacs/epylint .epylint
-ln -s $REPO_DIR/epylint .epylint
+ln -s $REPO_DIR/dotemacs/epylint .epylint # req: pip install --user --install-option="--install-scripts=~/bin" pep8 pylint 
+
 ln -s $REPO_DIR/dotvim .vim
 ln -s $REPO_DIR/dotvimrc .vimrc
 ln -s $REPO_DIR/dottmuxconf .tmux.conf
