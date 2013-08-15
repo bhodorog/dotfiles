@@ -134,9 +134,10 @@
 (setq inhibit-splash-screen -1)
 (cua-selection-mode t)
 (setq-default indent-tabs-mode nil)   ;; Don't use tabs to indent
-(setq tab-width 4)                    ;; Still if tabs are enabled make sure they're consistent
-(defvaralias 'c-basic-offset 'tab-width) ;; Override the default
-(defvaralias 'cperl-indent-level 'tab-width) ;; Override the default
+(setq-default tab-width 4)            ;; Still if tabs are enabled make sure they're consistent
+(defvaralias 'c-basic-offset 'tab-width)        ;; Override the default
+(defvaralias 'cperl-indent-level 'tab-width)    ;; Override the default
+(setq tab-stop-list (number-sequence 4 120 4))  ;; Use 4, 8, 12, 16 ... as tab stops when everything fails
 (visual-line-mode t)
 (tool-bar-mode nil)
 (menu-bar-mode -1)                    ;; Disable menu bar, make space on the screen
@@ -155,4 +156,3 @@
       backup-by-copying t             ;; Don't clobber symlinks
       backup-directory-alist
       '(("." . "~/.saves")))          ;; Don't litter my fs tree
-

@@ -25,3 +25,4 @@ _add_2_path /usr/local/opt/ruby/bin
 _add_2_path /usr/local/sbin
 _add_2_path ~/Bin
 _add_2_path /usr/local/Cellar/smlnj/110.75/libexec/bin
+_add_2_path /usr/texbin
