@@ -8,6 +8,8 @@
     ch-since = --no-pager log --since="2012-08-20" --no-merges --name-only --pretty=format:
     serve = daemon --reuseaddr --base-path=. --export-all --verbose
     sm = submodule
+    out = ..@{u}
+    in = @{u}..
 
 [core]
     excludesfile = /Users/bhodorog/.gitignore
