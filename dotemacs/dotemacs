@@ -18,15 +18,16 @@
 
 ;; make more packages available with the package installer
 (setq to-install
-      '(magit yasnippet jedi auto-complete autopair find-file-in-repository column-marker))
+      '(magit yasnippet-bundle jedi auto-complete autopair find-file-in-repository column-marker))
 
 (mapc 'install-if-needed to-install)
 
 (require 'magit)
 (require 'auto-complete)
 (require 'flymake)
-(require 'yasnippet)
 (require 'column-marker)
+(require 'yasnippet-bundle)
+(yas/load-directory "~/.emacs.d/snippets")
 
 ; auto-complete mode extra settings
 (setq

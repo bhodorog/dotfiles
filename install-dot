@@ -11,6 +11,7 @@ ln -s $REPO_DIR/dotbhgrc .bhgrc
 ln -s $REPO_DIR/dotgitconfig .gitconfig
 # install emacs stuff
 ln -s $REPO_DIR/dotemacs/dotemacs .emacs
+ln -s $REPO_DIR/dotemacs/snippets/ .emacs.d/snippets
 ln -s $REPO_DIR/dotemacs/epylint .epylint # req: pip install --user --install-option="--install-scripts=~/bin" epc jedi pep8 pylint 
 
 ln -s $REPO_DIR/dotvim .vim
