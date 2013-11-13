@@ -53,7 +53,7 @@
             (local-set-key (kbd "M-SPC") 'jedi:complete)
             (local-set-key (kbd "M-.") 'jedi:goto-definition)
             (setq show-trailing-whitespace t)
-            (autopair-mode t)
+            (electric-pair-mode t)
             (yas-minor-mode t)
             (which-function-mode 1)
             (outline-minor-mode t)
