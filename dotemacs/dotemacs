@@ -125,6 +125,7 @@
 (defalias 'ur 'unhighlight-regexp)
 
 (defalias 'dtw 'delete-trailing-whitespace)
+(defalias 'los 'view-lossage)
 
 ; Misc settings
 (transient-mark-mode t)
