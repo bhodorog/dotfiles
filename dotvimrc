@@ -88,6 +88,11 @@ cnoremap <C-B> <Left>
 cnoremap <Esc>b <S-Left>
 cnoremap <Esc>f <S-Right>
 
+" plugins activation
+nnoremap <leader>n :NERDTreeToggle<CR>
+
+
+
 " see http://stackoverflow.com/questions/4331776/change-vim-swap-backup-undo-file-name
 " Save your backups to a less annoying place than the current directory.
 " If you have .vim-backup in the current directory, it'll use that.

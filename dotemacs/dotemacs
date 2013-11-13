@@ -18,7 +18,7 @@
 
 ;; make more packages available with the package installer
 (setq to-install
-      '(magit yasnippet-bundle jedi auto-complete autopair find-file-in-repository column-marker))
+      '(yasnippet-bundle jedi auto-complete autopair find-file-in-repository column-marker))
 
 (mapc 'install-if-needed to-install)
 
