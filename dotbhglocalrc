@@ -10,7 +10,6 @@ source /usr/local/bin/virtualenvwrapper.sh
 _VEWRAPPER=/usr/local/bin/virtualenvwrapper.sh
 [[ -f $_VEWRAPPER ]] && source $_VEWRAPPER
 export WORKON_HOME=~/Work/virtenv
-CDPATH+='.:~/Work/repos/personal:~/Work/repos/pbs/hostedbento/bento'
 
 function _add_2_path {
     [[ -d $1 ]] && export PATH=$PATH:$1

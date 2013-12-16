@@ -1,9 +1,3 @@
-
-export WORKON_HOME=~/Work/virtenv
-export PATH=/usr/local/opt/ruby/bin:$PATH:/usr/local/sbin:~/Bin:/usr/local/Cellar/smlnj/110.75/libexec/bin:/usr/local/bin
-source /usr/local/bin/virtualenvwrapper.sh
-CDPATH+='.:~/Work/repos/personal:~/Work/repos/pbs/hostedbento/bento'
-
 alias ls='ls -G'
 alias tree='tree -C'
 alias ackl='ack --pager "less -R"'
