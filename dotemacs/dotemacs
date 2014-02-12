@@ -54,7 +54,7 @@
             (local-set-key (kbd "M-.") 'jedi:goto-definition)
             (setq show-trailing-whitespace t)
             (electric-pair-mode t)
-            (yas-minor-mode t)
+            (yas/minor-mode-on)
             (which-function-mode 1)
             (outline-minor-mode t)
             (setq coding-system-for-write 'utf-8)
