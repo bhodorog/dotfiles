@@ -19,6 +19,7 @@
 ;; make more packages available with the package installer
 (setq to-install
       '(yasnippet-bundle jedi auto-complete autopair find-file-in-repository column-marker))
+;; nav for quick nav
 
 (mapc 'install-if-needed to-install)
 
