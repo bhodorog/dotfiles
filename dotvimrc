@@ -61,7 +61,7 @@ vnoremap <tab> %
 set wrap
 set textwidth=79
 set formatoptions=qrn1
-set colorcolumn=85
+au BufNewFile,BufRead *.py setlocal colorcolumn=80
 
 nnoremap <up> <nop>
 nnoremap <down> <nop>

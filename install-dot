@@ -3,7 +3,7 @@
 # requirements are listed inline with the command which requires it. You can grep the file after -oP '(?<=req: ).*' to install the requirements
 
 
-REPO_DIR="$( cd "$( dirname "$(readlink -f $0)" )" && pwd )"
+REPO_DIR="$( cd "$( dirname "$(readlink $0)" )" && pwd )"
 echo $REPO_DIR
 
 cd

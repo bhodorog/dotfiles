@@ -23,7 +23,6 @@
 
 (mapc 'install-if-needed to-install)
 
-(require 'magit)
 (require 'auto-complete)
 (require 'flymake)
 (require 'column-marker)

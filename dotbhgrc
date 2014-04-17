@@ -34,7 +34,7 @@ function _bhg_color_ps1 {
     export PS1="${BLUE}\u@\h${RESET}:${GREEN}\w${RED}"'$(__git_ps1)'"${RESET}\n\$ "
 }
 
-_bhg_color_ps1
+[[ -n $BREW_PREFIX ]] && [[ -f $BREW_PREFIX/etc/bash_completion ]] && _bhg_color_ps1
 
 # source specific configs
 _bhg_source_if_exists ~/.bhglocalrc
