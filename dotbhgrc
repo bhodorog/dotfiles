@@ -1,7 +1,6 @@
 alias ls='ls -G'
 alias tree='tree -C'
 alias ackl='ack --pager "less -R"'
-alias vim=/usr/local/bin/vim
 alias vi=vim
 alias emc='emacsclient -nw'
 
