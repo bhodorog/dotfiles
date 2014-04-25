@@ -1,12 +1,3 @@
-function _bhg_source_if_exists {
-    [[ -f $1 ]] && source $1
-}
-_bhg_source_if_exists $(brew --prefix)/etc/bash_completion
-_bhg_source_if_exists $(brew --prefix)/etc/bash_completion.d/git-prompt.sh
-_bhg_source_if_exists $(brew --prefix)/etc/bash_completion.d/git-completion.sh
-
-export WORKON_HOME=~/Work/virtenv
-source /usr/local/bin/virtualenvwrapper.sh
 _VEWRAPPER=/usr/local/bin/virtualenvwrapper.sh
 [[ -f $_VEWRAPPER ]] && source $_VEWRAPPER
 export WORKON_HOME=~/Work/virtenv
