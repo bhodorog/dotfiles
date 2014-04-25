@@ -1,15 +1,15 @@
-function _bhg_source_if_exists {
-    [[ -f $1 ]] && source $1
-}
-_bhg_source_if_exists $(brew --prefix)/etc/bash_completion
-_bhg_source_if_exists $(brew --prefix)/etc/bash_completion.d/git-prompt.sh
-_bhg_source_if_exists $(brew --prefix)/etc/bash_completion.d/git-completion.sh
+# function _bhg_source_if_exists {
+#     [[ -f $1 ]] && source $1
+# }
+# _bhg_source_if_exists $(brew --prefix)/etc/bash_completion
+# _bhg_source_if_exists $(brew --prefix)/etc/bash_completion.d/git-prompt.sh
+# _bhg_source_if_exists $(brew --prefix)/etc/bash_completion.d/git-completion.sh
 
-export WORKON_HOME=~/Work/virtenv
-source /usr/local/bin/virtualenvwrapper.sh
-_VEWRAPPER=/usr/local/bin/virtualenvwrapper.sh
-[[ -f $_VEWRAPPER ]] && source $_VEWRAPPER
-export WORKON_HOME=~/Work/virtenv
+# export WORKON_HOME=~/Work/virtenv
+# source /usr/local/bin/virtualenvwrapper.sh
+# _VEWRAPPER=/usr/local/bin/virtualenvwrapper.sh
+# [[ -f $_VEWRAPPER ]] && source $_VEWRAPPER
+# export WORKON_HOME=~/Work/virtenv
 
 function _add_2_path {
     [[ -d $1 ]] && export PATH=$PATH:$1
@@ -19,9 +19,45 @@ function _prepend_2_path {
     [[ -d $1 ]] && export PATH=$1:$PATH
 }
 
+printf "_prepend_2_path /usr/local/bin"
+START=$(gdate +%S.%N)
 _prepend_2_path /usr/local/bin
+END=$(gdate +%S.%N)
+DUR=$(echo ${END}-${START} | bc)
+printf " %s\n" ${DUR}
+
+printf "_add_2_path /usr/local/opt/ruby/bin"
+START=$(gdate +%S.%N)
 _add_2_path /usr/local/opt/ruby/bin
+END=$(gdate +%S.%N)
+DUR=$(echo ${END}-${START} | bc)
+printf " %s\n" ${DUR}
+
+printf "_add_2_path /usr/local/sbin"
+START=$(gdate +%S.%N)
 _add_2_path /usr/local/sbin
+END=$(gdate +%S.%N)
+DUR=$(echo ${END}-${START} | bc)
+printf " %s\n" ${DUR}
+
+printf "_add_2_path ~/Bin"
+START=$(gdate +%S.%N)
 _add_2_path ~/Bin
+END=$(gdate +%S.%N)
+DUR=$(echo ${END}-${START} | bc)
+printf " %s\n" ${DUR}
+
+printf "_add_2_path /usr/local/Cellar/smlnj/110.75/libexec/bin"
+START=$(gdate +%S.%N)
 _add_2_path /usr/local/Cellar/smlnj/110.75/libexec/bin
+END=$(gdate +%S.%N)
+DUR=$(echo ${END}-${START} | bc)
+printf " %s\n" ${DUR}
+
+printf "_add_2_path /usr/texbin"
+START=$(gdate +%S.%N)
 _add_2_path /usr/texbin
+END=$(gdate +%S.%N)
+DUR=$(echo ${END}-${START} | bc)
+printf " %s\n" ${DUR}
+

@@ -20,12 +20,14 @@ START=$(gdate +%S.%N)
 END=$(gdate +%S.%N)
 DUR=$(echo ${END}-${START} | bc)
 printf " %s\n" ${DUR}
+
 printf "Importing git-prompt"
 START=$(gdate +%S.%N)
 [[ -n $BREW_PREFIX ]] && _bhg_source_if_exists $BREW_PREFIX/etc/bash_completion.d/git-prompt.sh
 END=$(gdate +%S.%N)
 DUR=$(echo ${END}-${START} | bc)
 printf " %s\n" ${DUR}
+
 printf "Importing git-completion"
 START=$(gdate +%S.%N)
 [[ -n $BREW_PREFIX ]] && _bhg_source_if_exists $BREW_PREFIX/etc/bash_completion.d/git-completion.sh
@@ -57,6 +59,7 @@ _bhg_source_if_exists ~/.bhglocalrc
 END=$(gdate +%S.%N)
 DUR=$(echo ${END}-${START} | bc)
 printf " %s\n" ${DUR}
+
 printf "Sourcing bhgfuncrc"
 START=$(gdate +%S.%N)
 _bhg_source_if_exists ~/.bhgfuncrc
