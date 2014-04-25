@@ -14,9 +14,24 @@ function _bhg_source_if_exists {
 
 which brew &>/dev/null && BREW_PREFIX=$(brew --prefix)
 
+printf "Importing bash_completion"
+START=$(gdate +%S.%N)
 [[ -n $BREW_PREFIX ]] && _bhg_source_if_exists $BREW_PREFIX/etc/bash_completion
+END=$(gdate +%S.%N)
+DUR=$(echo ${END}-${START} | bc)
+printf " %s\n" ${DUR}
+printf "Importing git-prompt"
+START=$(gdate +%S.%N)
 [[ -n $BREW_PREFIX ]] && _bhg_source_if_exists $BREW_PREFIX/etc/bash_completion.d/git-prompt.sh
+END=$(gdate +%S.%N)
+DUR=$(echo ${END}-${START} | bc)
+printf " %s\n" ${DUR}
+printf "Importing git-completion"
+START=$(gdate +%S.%N)
 [[ -n $BREW_PREFIX ]] && _bhg_source_if_exists $BREW_PREFIX/etc/bash_completion.d/git-completion.sh
+END=$(gdate +%S.%N)
+DUR=$(echo ${END}-${START} | bc)
+printf " %s\n" ${DUR}
 
 # customize PS1
 function _bhg_color_ps1 {
@@ -36,5 +51,15 @@ function _bhg_color_ps1 {
 [[ -n $BREW_PREFIX ]] && [[ -f $BREW_PREFIX/etc/bash_completion ]] && _bhg_color_ps1
 
 # source specific configs
+printf "Sourcing bhglocalrc"
+START=$(gdate +%S.%N)
 _bhg_source_if_exists ~/.bhglocalrc
+END=$(gdate +%S.%N)
+DUR=$(echo ${END}-${START} | bc)
+printf " %s\n" ${DUR}
+printf "Sourcing bhgfuncrc"
+START=$(gdate +%S.%N)
 _bhg_source_if_exists ~/.bhgfuncrc
+END=$(gdate +%S.%N)
+DUR=$(echo ${END}-${START} | bc)
+printf " %s\n" ${DUR}
