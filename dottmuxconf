@@ -4,3 +4,4 @@ bind-key C-q send-prefix
 set-option -g history-limit 3000
 set -g default-shell /usr/local/bin/bash
 set -g default-command /usr/local/bin/bash
+set -g update-environment -r
