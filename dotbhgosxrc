@@ -12,3 +12,4 @@ _add_2_path /usr/local/bin
 _add_2_path ~/Bin
 _add_2_path /usr/local/Cellar/smlnj/110.75/libexec/bin
 _add_2_path /usr/texbin
+_add_2_path /usr/local/opt/go/libexec/bin/

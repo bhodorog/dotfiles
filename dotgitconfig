@@ -7,6 +7,7 @@
     ci = commit
     ch-since = --no-pager log --since="2012-08-20" --no-merges --name-only --pretty=format:
     serve = daemon --reuseaddr --base-path=. --export-all --verbose --enable=receive-pack
+    # git clone git://<<IP_ADDRESS>>/ <<project_name>> # notice the space!
     sm = submodule
     out = ..@{u}
     in = @{u}..
@@ -23,3 +24,5 @@
    date = relative
 [format]
 #  pretty = format:%h %Cblue%ad%Creset %ae %Cgreen%s%Creset
+[push]
+	default = simple

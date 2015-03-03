@@ -6,9 +6,9 @@
 (require 'package)
 (package-initialize)
 (add-to-list 'package-archives
-	     '("melpa" . "http://melpa.milkbox.net/packages/"))
+	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (add-to-list 'package-archives
-	     '("marmalade" . "http://marmalade-repo.org/packages/") t)
+	     '("marmalade" . "https://marmalade-repo.org/packages/") t)
 
 (package-refresh-contents)
 
@@ -26,8 +26,9 @@
 (require 'auto-complete)
 (require 'flymake)
 (require 'column-marker)
-(require 'yasnippet-bundle)
-(yas/load-directory "~/.emacs.d/snippets")
+;; (require 'yasnippet-bundle)
+(require 'dired-x)
+;; (yas/load-directory "~/.emacs.d/snippets")
 
 ; auto-complete mode extra settings
 (setq
@@ -54,7 +55,7 @@
             (local-set-key (kbd "M-.") 'jedi:goto-definition)
             (setq show-trailing-whitespace t)
             (electric-pair-mode t)
-            (yas/minor-mode-on)
+            ;; (yas/minor-mode-on)
             (which-function-mode 1)
             (outline-minor-mode t)
             (setq coding-system-for-write 'utf-8)
@@ -158,3 +159,21 @@
       backup-by-copying t             ;; Don't clobber symlinks
       backup-directory-alist
       '(("." . "~/.saves")))          ;; Don't litter my fs tree
+
+(put 'narrow-to-region 'disabled nil)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-archives
+   (quote
+    (("gnu" . "http://elpa.gnu.org/packages/")
+     ("melpa" . "http://melpa.milkbox.net/packages/")
+     ("marmalade" . "http://marmalade-repo.org/packages/")))))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
