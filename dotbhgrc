@@ -14,6 +14,7 @@ function _bhg_source_if_exists {
 
 which brew &>/dev/null && BREW_PREFIX=$(brew --prefix)
 
+# needs to homebrew git (to have git-prompt.sh and git-completion.sh installed in bash_completion.d
 [[ -n $BREW_PREFIX ]] && _bhg_source_if_exists $BREW_PREFIX/etc/bash_completion
 [[ -n $BREW_PREFIX ]] && _bhg_source_if_exists $BREW_PREFIX/etc/bash_completion.d/git-prompt.sh
 [[ -n $BREW_PREFIX ]] && _bhg_source_if_exists $BREW_PREFIX/etc/bash_completion.d/git-completion.sh
@@ -31,9 +32,11 @@ function _bhg_color_ps1 {
     export PS1='[\u@\h \W$(__git_ps1 " (%s)")]\$ '
     export PS1='\[\033[32m\]\u@\h\[\033[00m\]:\[\033[34m\]\w\[\033[31m\]$(__git_ps1)\[\033[00m\]\$ '
     export PS1="${BLUE}\u@\h${RESET}:${GREEN}\w${RED}"'$(__git_ps1)'"${RESET}\n\$ "
+    [[ -e $(which rvm) ]] && export PS1="(\$(~/.rvm/bin/rvm-prompt))$PS1"
 }
 
 [[ -n $BREW_PREFIX ]] && [[ -f $BREW_PREFIX/etc/bash_completion ]] && _bhg_color_ps1
+#[[ -n $(brew --prefix bash-git-prompt) ]] && _bhg_color_ps1
 
 # source specific configs
 _bhg_source_if_exists ~/.bhglocalrc

@@ -1,5 +1,6 @@
 [alias]
     gr = log --graph --full-history --color --pretty=tformat:"%x1b[31m%h%x09%x1b[32m%d%x1b[33m{%an}%x1b[0m%x20%s%x20%x1b[0m%x20%x1b[34m[%cr%x20%x1b[36m%cd]"
+    logt = log --color --pretty=tformat:"%x1b[31m%h%x09%x1b[32m%d%x1b[33m{%an}%x1b[0m%x20%s%x20%x1b[0m%x20%x1b[34m[%cr%x20%x1b[36m%cd]"
     co = checkout
     st = status
     difrev = diff --color --cached
@@ -13,10 +14,10 @@
     in = @{u}..
 
 [core]
-    excludesfile = /Users/bhodorog/.gitignore
+	excludesfile = /Users/bogdan.hodorog/.gitignore_global
     editor = /usr/local/bin/vim
 [user]
-	email = bogdan.hodorog@3pillarglobal.com
+	email = bogdan.hodorog@fairfaxmedia.com.au
 	name = Bogdan Hodorog
 [color]
     ui = auto
@@ -26,3 +27,9 @@
 #  pretty = format:%h %Cblue%ad%Creset %ae %Cgreen%s%Creset
 [push]
 	default = simple
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /opt/homebrew-cask/Caskroom/sourcetree/2.0.5.2/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true

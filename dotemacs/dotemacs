@@ -18,7 +18,7 @@
 
 ;; make more packages available with the package installer
 (setq to-install
-      '(yasnippet-bundle jedi auto-complete autopair find-file-in-repository column-marker markdown-mode))
+      '(web-mode window-number yasnippet-bundle jedi auto-complete autopair find-file-in-repository column-marker markdown-mode))
 ;; nav for quick nav
 
 (mapc 'install-if-needed to-install)
@@ -28,6 +28,17 @@
 (require 'column-marker)
 ;; (require 'yasnippet-bundle)
 (require 'dired-x)
+(require 'window-number)
+(window-number-mode 1)
+(require 'web-mode)
+(defun my-web-mode-hook ()
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
+)
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
 ;; (yas/load-directory "~/.emacs.d/snippets")
 
 ; auto-complete mode extra settings
@@ -36,6 +47,21 @@
  ac-override-local-map nil
  ac-use-menu-map t
  ac-candidate-limit 20)
+
+(require 'flymake-ruby)
+
+(add-hook
+ 'ruby-mode-hook
+ (lambda ()
+   (setq show-trailing-whitespace t)
+   (outline-minor-mode t)
+   (which-function-mode 1)
+   (setq coding-system-for-write 'utf-8)
+   (setq fill-column 79)
+   (column-marker-1 79)
+   (column-marker-2 80)
+   (flymake-ruby-load)
+   ))
 
 (require 'jedi)
 ;; It's also required to run "pip install --user jedi" and "pip
@@ -46,23 +72,24 @@
 ;; if you need to change your python intepreter, if you want to change it
 ;; (setq jedi:server-command
 ;;       '("python2" "/path/to/.emacs.d/elpa/jedi-0.1.2/jediepcserver.py"))
-(add-hook 'python-mode-hook
-	  (lambda ()
-	    (jedi:setup)
-	    (jedi:ac-setup)
-            (local-set-key "\C-cd" 'jedi:show-doc)
-            (local-set-key (kbd "M-SPC") 'jedi:complete)
-            (local-set-key (kbd "M-.") 'jedi:goto-definition)
-            (setq show-trailing-whitespace t)
-            (electric-pair-mode t)
-            ;; (yas/minor-mode-on)
-            (which-function-mode 1)
-            (outline-minor-mode t)
-            (setq coding-system-for-write 'utf-8)
-            (setq fill-column 79)
-            (column-marker-1 79)
-            (column-marker-2 80)
-            ))
+(add-hook
+ 'python-mode-hook
+ (lambda ()
+   (jedi:setup)
+   (jedi:ac-setup)
+   (local-set-key "\C-cd" 'jedi:show-doc)
+   (local-set-key (kbd "M-SPC") 'jedi:complete)
+   (local-set-key (kbd "M-.") 'jedi:goto-definition)
+   (setq show-trailing-whitespace t)
+   (electric-pair-mode t)
+   ;; (yas/minor-mode-on)
+   (which-function-mode 1)
+   (outline-minor-mode t)
+   (setq coding-system-for-write 'utf-8)
+   (setq fill-column 79)
+   (column-marker-1 79)
+   (column-marker-2 80)
+   ))
 
 ;; Flymake settings for Python
 (defun flymake-python-init ()
@@ -112,6 +139,7 @@
 ; Shortening of often used commands
 (defalias 'gf 'grep-find)
 (defalias 'fd 'find-dired)
+(defalias 'fgd 'find-grep-dired)
 (defalias 'sh 'shell)
 
 (defalias 'qrr 'query-replace-regexp)
@@ -166,11 +194,13 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(markdown-command "kramdown")
  '(package-archives
    (quote
     (("gnu" . "http://elpa.gnu.org/packages/")
      ("melpa" . "http://melpa.milkbox.net/packages/")
-     ("marmalade" . "http://marmalade-repo.org/packages/")))))
+     ("marmalade" . "http://marmalade-repo.org/packages/"))))
+ '(tab-width 2))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

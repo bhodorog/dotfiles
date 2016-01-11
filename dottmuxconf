@@ -1,7 +1,8 @@
 set-option -g prefix C-q
 unbind-key C-b
 bind-key C-q send-prefix
-set-option -g history-limit 3000
+set-option -g history-limit 5000
 set -g default-shell /usr/local/bin/bash
-set -g default-command /usr/local/bin/bash
+# set -g default-command /usr/local/bin/bash
+set -g default-command "/usr/local/bin/bash --login"
 set -g update-environment -r

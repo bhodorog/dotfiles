@@ -1,6 +1,0 @@
-let g:netrw_dirhistmax  =10
-let g:netrw_dirhist_cnt =4
-let g:netrw_dirhist_1='/Users/bhodorog/Work/etc/apache2/extra'
-let g:netrw_dirhist_2='/Users/bhodorog/Work/etc/apache2'
-let g:netrw_dirhist_3='/Users/bhodorog/Work/etc'
-let g:netrw_dirhist_4='/Users/bhodorog/Work/repos/pbs/hostedbento/creds/hostedbento-local'
