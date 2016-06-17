@@ -17,7 +17,7 @@
 	excludesfile = /Users/bogdan.hodorog/.gitignore_global
     editor = /usr/local/bin/vim
 [user]
-	email = bogdan.hodorog@fairfaxmedia.com.au
+	email = bogdan.hodorog@domain.com.au
 	name = Bogdan Hodorog
 [color]
     ui = auto
@@ -33,3 +33,13 @@
 [mergetool "sourcetree"]
 	cmd = /opt/homebrew-cask/Caskroom/sourcetree/2.0.5.2/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
 	trustExitCode = true
+[merge]
+[merge]
+	tool = p4mergetool
+[mergetool "p4mergetool"]
+[difftool "p4mergetool"]
+	cmd = /Applications/p4merge.app/Contents/Resources/launchp4merge $LOCAL $REMOTE
+[color "branch"]
+  current = red
+  local = yellow
+  remote = green

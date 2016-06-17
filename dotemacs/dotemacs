@@ -1,16 +1,25 @@
-; automatically switch to lisp-mode for given files
+;; automatically switch to lisp-mode for given files
 (setq auto-mode-alist (cons '("dotemacs" . lisp-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("emacscustom" . lisp-mode) auto-mode-alist))
 
-;; Prerequisite: Emacs >= 24
-(require 'package)
-(package-initialize)
-(add-to-list 'package-archives
-	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
-(add-to-list 'package-archives
-	     '("marmalade" . "https://marmalade-repo.org/packages/") t)
+;; enable elpa
+(when (>= emacs-major-version 24)
+  (require 'package)
+  (add-to-list
+    'package-archives
+    '("melpa" . "http://melpa.org/packages/")
+    t)
+  (package-initialize))
 
-(package-refresh-contents)
+;; Prerequisite: Emacs >= 24
+;; (require 'package)
+;; (package-initialize)
+;; (add-to-list 'package-archives
+;; 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
+;; (add-to-list 'package-archives
+;; 	     '("marmalade" . "https://marmalade-repo.org/packages/") t)
+;; 
+;; (package-refresh-contents)
 
 (defun install-if-needed (package)
   (unless (package-installed-p package)
@@ -18,13 +27,17 @@
 
 ;; make more packages available with the package installer
 (setq to-install
-      '(web-mode window-number yasnippet-bundle jedi auto-complete autopair find-file-in-repository column-marker markdown-mode))
+      '(web-mode window-number yasnippet-bundle jedi auto-complete autopair find-file-in-repository column-marker markdown-mode flycheck))
 ;; nav for quick nav
 
 (mapc 'install-if-needed to-install)
 
 (require 'auto-complete)
-(require 'flymake)
+;; (require 'flymake)
+(require 'flycheck)
+(global-flycheck-mode)
+(setq flycheck-highlighting-mode 'lines)
+
 (require 'column-marker)
 ;; (require 'yasnippet-bundle)
 (require 'dired-x)
@@ -48,7 +61,7 @@
  ac-use-menu-map t
  ac-candidate-limit 20)
 
-(require 'flymake-ruby)
+;; (require 'flymake-ruby)
 
 (add-hook
  'ruby-mode-hook
@@ -60,7 +73,7 @@
    (setq fill-column 79)
    (column-marker-1 79)
    (column-marker-2 80)
-   (flymake-ruby-load)
+   ;; (flymake-ruby-load)
    ))
 
 (require 'jedi)
@@ -91,39 +104,39 @@
    (column-marker-2 80)
    ))
 
-;; Flymake settings for Python
-(defun flymake-python-init ()
-  (let* ((temp-file (flymake-init-create-temp-buffer-copy
-                     'flymake-create-temp-inplace))
-         (local-file (file-relative-name
-                      temp-file
-                      (file-name-directory buffer-file-name))))
-    (list "~/.epylint" (list local-file))))
+;; ;; Flymake settings for Python
+;; (defun flymake-python-init ()
+;;   (let* ((temp-file (flymake-init-create-temp-buffer-copy
+;;                      'flymake-create-temp-inplace))
+;;          (local-file (file-relative-name
+;;                       temp-file
+;;                       (file-name-directory buffer-file-name))))
+;;     (list "~/.epylint" (list local-file))))
 
-(defun flymake-activate ()
-  "Activates flymake when real buffer and you have write access"
-  (if (and
-       (buffer-file-name)
-       (file-writable-p buffer-file-name))
-      (progn
-        (flymake-mode t)
-        ;; this is necessary since there is no flymake-mode-hook...
-        (local-set-key (kbd "C-c n") 'flymake-goto-next-error)
-        (local-set-key (kbd "C-c p") 'flymake-goto-prev-error))))
+;; (defun flymake-activate ()
+;;   "Activates flymake when real buffer and you have write access"
+;;   (if (and
+;;        (buffer-file-name)
+;;        (file-writable-p buffer-file-name))
+;;       (progn
+;;         (flymake-mode t)
+;;         ;; this is necessary since there is no flymake-mode-hook...
+;;         (local-set-key (kbd "C-c n") 'flymake-goto-next-error)
+;;         (local-set-key (kbd "C-c p") 'flymake-goto-prev-error))))
 
-(defun ca-flymake-show-help ()
-  (when (get-char-property (point) 'flymake-overlay)
-    (let ((help (get-char-property (point) 'help-echo)))
-      (if help (message "%s" help)))))
+;; (defun ca-flymake-show-help ()
+;;   (when (get-char-property (point) 'flymake-overlay)
+;;     (let ((help (get-char-property (point) 'help-echo)))
+;;       (if help (message "%s" help)))))
 
-(add-hook 'post-command-hook 'ca-flymake-show-help)
-
-
-(add-to-list 'flymake-allowed-file-name-masks
-             '("\\.py\\'" flymake-python-init))
+;; (add-hook 'post-command-hook 'ca-flymake-show-help)
 
 
-(add-hook 'python-mode-hook 'flymake-activate)
+;; (add-to-list 'flymake-allowed-file-name-masks
+;;              '("\\.py\\'" flymake-python-init))
+
+
+;; (add-hook 'python-mode-hook 'flymake-activate)
 (add-hook 'python-mode-hook 'auto-complete-mode)
 
 (global-set-key [(meta /)] 'dabbrev-expand)
@@ -136,7 +149,19 @@
                   (setq show-trailing-whitespace
                         (not show-trailing-whitespace))))
 
+;; Toggle between values which works for my specific screen resolution
+;; changes to force opening a new split vertically
+(defun toggle-split-width-threshold ()
+  (interactive)
+  (setq origin-split-width-threshold split-width-threshold)
+  (cond
+   ((eq origin-split-width-threshold 100) (setq split-width-threshold 240))
+   ((eq origin-split-width-threshold 240) (setq split-width-threshold 100))
+   ))
+
+
 ; Shortening of often used commands
+(defalias 'tswh 'toggle-split-width-threshold)
 (defalias 'gf 'grep-find)
 (defalias 'fd 'find-dired)
 (defalias 'fgd 'find-grep-dired)
@@ -155,6 +180,9 @@
 
 (defalias 'dtw 'delete-trailing-whitespace)
 (defalias 'los 'view-lossage)
+(defalias 'garm 'global-auto-revert-mode)
+
+
 
 ; Misc settings
 (transient-mark-mode t)
@@ -206,4 +234,8 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(flycheck-error ((t (:background "white" :foreground "red" :underline t))))
+ '(flycheck-info ((t (:background "white" :foreground "green" :underline t))))
+ '(flycheck-warning ((t (:background "white" :foreground "yellow" :underline t))))
+ '(font-lock-function-name-face ((t (:foreground "color-27")))))
+(put 'set-goal-column 'disabled nil)

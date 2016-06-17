@@ -11,6 +11,7 @@ PYLINT_COMMAND = "pylint"
 PYCHECKER_COMMAND = "pychecker"
 PEP8_COMMAND = "pep8"
 PYFLAKES_COMMAND = "pyflakes"
+FLAKE8_COMMAND = "flake8"
 
 
 class LintRunner(object):
@@ -226,6 +227,18 @@ class PyflakesRunner(LintRunner):
         return data
 
 
+# class Flake8Runner(LintRunner):
+#     command = FLAKE8_COMMAND
+
+#     output_matcher = re.compile(
+#         r'(?P<filename>[^:]+):'
+#         r'(?P<line_number>[^:]+):'
+#         # r'(?P<col_number>[^:]+):'
+#         # r'(?P<error_number> [^:]+) '
+#         r'(?P<description>.+)$'),
+#     )
+
+
 def main():
     from optparse import OptionParser
     parser = OptionParser()
@@ -239,17 +252,18 @@ def main():
                       help="error codes to ignore")
     options, args = parser.parse_args()
 
-    for runnerclass in (PylintRunner,
-                        #PycheckerRunner,
-                        Pep8Runner,
-                        PyflakesRunner,
-                        CompilerRunner):
+    runner_classes = (PylintRunner,
+                      #PycheckerRunner,
+                      Pep8Runner,
+                      PyflakesRunner,
+                      CompilerRunner)
+    for runnerclass in runner_classes:
         runner = runnerclass(virtualenv=options.virtualenv,
                              ignore_codes=options.ignore_codes)
         try:
             runner.run(args[0])
         except Exception:
-            #print >> sys.stdout, '{0} FAILED'.format(runner)
+            print >> sys.stdout, '{0} FAILED'.format(runner)
             print 'ERROR : {0} failed to run at {1} line 1.'.format(
                 runner.__class__.__name__, args[0])
 

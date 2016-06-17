@@ -6,3 +6,4 @@ set -g default-shell /usr/local/bin/bash
 # set -g default-command /usr/local/bin/bash
 set -g default-command "/usr/local/bin/bash --login"
 set -g update-environment -r
+set -g default-terminal "screen-256color"
