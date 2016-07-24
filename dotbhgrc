@@ -7,6 +7,8 @@ alias emc='emacsclient -nw'
 # append history rather than rewrite
 shopt -s histappend
 PROMPT_COMMAND='history -a'
+HISTSIZE=5000
+HISTFILESIZE=500000
 
 function _bhg_source_if_exists {
     [[ -f $1 ]] && source $1
