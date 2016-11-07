@@ -27,32 +27,43 @@
 
 ;; make more packages available with the package installer
 (setq to-install
-      '(web-mode window-number yasnippet-bundle jedi auto-complete autopair find-file-in-repository column-marker markdown-mode flycheck))
+      '(web-mode window-number yasnippet-bundle jedi auto-complete autopair find-file-in-repository column-marker markdown-mode flycheck haskell-mode sr-speedbar))
 ;; nav for quick nav
 
 (mapc 'install-if-needed to-install)
 
 (require 'auto-complete)
-;; (require 'flymake)
+
 (require 'flycheck)
-(global-flycheck-mode)
+(add-hook 'after-init-hook #'global-flycheck-mode)
 (setq flycheck-highlighting-mode 'lines)
 
 (require 'column-marker)
-;; (require 'yasnippet-bundle)
+
 (require 'dired-x)
+
 (require 'window-number)
 (window-number-mode 1)
+
 (require 'web-mode)
 (defun my-web-mode-hook ()
   (setq web-mode-markup-indent-offset 2)
   (setq web-mode-css-indent-offset 2)
   (setq web-mode-code-indent-offset 2)
 )
-(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
-;; (yas/load-directory "~/.emacs.d/snippets")
+;; (require 'helm-config)
+;; (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
+(require 'yasnippet-bundle)
+(yas/load-directory "~/.emacs.d/snippets/snippets")
+;; (require 'yasnippet)
+;; (yas-global-mode 1)
+;; (setq yas-snippet-dirs
+;;       '("~/.emacs.d/snippets/snippets" ;; personal snippets
+;;         ;; "~/.emacs.d/??" ;; python-mode snippets
+;;         ))
+
 
 ; auto-complete mode extra settings
 (setq
@@ -85,6 +96,17 @@
 ;; if you need to change your python intepreter, if you want to change it
 ;; (setq jedi:server-command
 ;;       '("python2" "/path/to/.emacs.d/elpa/jedi-0.1.2/jediepcserver.py"))
+
+(require 'haskell-interactive-mode)
+(require 'haskell-process)
+(add-hook 'haskell-mode-hook
+          (lambda ()
+            (haskell-indentation-mode)
+            (interactive-haskell-mode)))
+
+(eval-after-load "haskell-mode" '(define-key haskell-mode-map (kbd "C-c C-c" ) 'haskell-compile))
+(eval-after-load "haskell-cabal" '(define-key haskell-mode-map (kbd "C-c C-c" ) 'haskell-compile))
+
 (add-hook
  'python-mode-hook
  (lambda ()
@@ -148,13 +170,14 @@
                   (interactive)
                   (setq show-trailing-whitespace
                         (not show-trailing-whitespace))))
+(global-set-key (kbd "\C-x a r") 'align-regexp)
 
 ;; Toggle between values which works for my specific screen resolution
 ;; changes to force opening a new split vertically
 (defun toggle-split-width-threshold ()
   (interactive)
   (setq origin-split-width-threshold split-width-threshold)
-  (cond
+ython  (cond
    ((eq origin-split-width-threshold 100) (setq split-width-threshold 240))
    ((eq origin-split-width-threshold 240) (setq split-width-threshold 100))
    ))
@@ -181,6 +204,12 @@
 (defalias 'dtw 'delete-trailing-whitespace)
 (defalias 'los 'view-lossage)
 (defalias 'garm 'global-auto-revert-mode)
+(defalias 'slm 'scroll-lock-mode)
+
+;; Various reminders
+
+;; Use it with E on marked buffers in ibuffer to revisit buffers to a new location
+;; (set-visited-file-name (replace-regexp-in-string "adapter-api-bluebottle" "bluebottle-adapter-api" (buffer-file-name)))
 
 
 
@@ -201,6 +230,7 @@
 (tool-bar-mode nil)
 (menu-bar-mode -1)                    ;; Disable menu bar, make space on the screen
 (ido-mode 1)
+(ido-everywhere 1)
 (defalias 'yes-or-no-p 'y-or-n-p)     ;; Use y-n instead of verbose yes-no
 (require 'uniquify)                   ;; Differentiate among buffers with the same name
 (setq
@@ -214,7 +244,7 @@
       backup-by-copying-when-linked t ;; Copy linked files, don't rename.
       backup-by-copying t             ;; Don't clobber symlinks
       backup-directory-alist
-      '(("." . "~/.saves")))          ;; Don't litter my fs tree
+      '((".*" . "~/.saves")))          ;; Don't litter my fs tree
 
 (put 'narrow-to-region 'disabled nil)
 (custom-set-variables
@@ -228,6 +258,9 @@
     (("gnu" . "http://elpa.gnu.org/packages/")
      ("melpa" . "http://melpa.milkbox.net/packages/")
      ("marmalade" . "http://marmalade-repo.org/packages/"))))
+ '(package-selected-packages
+   (quote
+    (yasnippet magit ggtags sr-speedbar ace-jump-mode persistent-soft undo-tree ergoemacs-mode helm-ag yasnippet-bundle yaml-mode window-number web-mode sml-mode smartparens sass-mode ruby-block rubocop rspec-mode php-mode nav markdown-mode jinja2-mode jekyll-modes jedi helm flymake-ruby flycheck-haskell flycheck-color-mode-line find-file-in-repository dockerfile-mode column-marker coffee-mode autopair ag ack-and-a-half ack)))
  '(tab-width 2))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
