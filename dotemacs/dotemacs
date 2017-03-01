@@ -27,7 +27,7 @@
 
 ;; make more packages available with the package installer
 (setq to-install
-      '(web-mode window-number yasnippet-bundle jedi auto-complete autopair find-file-in-repository column-marker markdown-mode flycheck haskell-mode sr-speedbar))
+      '(web-mode window-number yasnippet jedi auto-complete autopair find-file-in-repository column-marker markdown-mode flycheck haskell-mode sr-speedbar))
 ;; nav for quick nav
 
 (mapc 'install-if-needed to-install)
@@ -55,7 +55,9 @@
 ;; (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
 ;; (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
 ;; (add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
-(require 'yasnippet-bundle)
+;; (require 'yasnippet-bundle)
+(require 'yasnippet)
+(setq yas-global-mode 1)
 (yas/load-directory "~/.emacs.d/snippets/snippets")
 ;; (require 'yasnippet)
 ;; (yas-global-mode 1)
@@ -101,11 +103,10 @@
 (require 'haskell-process)
 (add-hook 'haskell-mode-hook
           (lambda ()
-            (haskell-indentation-mode)
             (interactive-haskell-mode)))
 
-(eval-after-load "haskell-mode" '(define-key haskell-mode-map (kbd "C-c C-c" ) 'haskell-compile))
-(eval-after-load "haskell-cabal" '(define-key haskell-mode-map (kbd "C-c C-c" ) 'haskell-compile))
+;; (eval-after-load "haskell-mode" '(define-key haskell-mode-map (kbd "C-c C-c" ) 'haskell-compile))
+;; (eval-after-load "haskell-cabal" '(define-key haskell-mode-map (kbd "C-c C-c" ) 'haskell-compile))
 
 (add-hook
  'python-mode-hook
@@ -247,6 +248,11 @@ ython  (cond
       '((".*" . "~/.saves")))          ;; Don't litter my fs tree
 
 (put 'narrow-to-region 'disabled nil)
+
+(autoload 'zap-to-char "misc" "Kill up to, but no including occurence of CHAR")
+(global-set-key "\M-z" 'zap-up-to-char)
+(global-set-key "\M-Z" 'zap-to-char)
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -260,7 +266,7 @@ ython  (cond
      ("marmalade" . "http://marmalade-repo.org/packages/"))))
  '(package-selected-packages
    (quote
-    (yasnippet magit ggtags sr-speedbar ace-jump-mode persistent-soft undo-tree ergoemacs-mode helm-ag yasnippet-bundle yaml-mode window-number web-mode sml-mode smartparens sass-mode ruby-block rubocop rspec-mode php-mode nav markdown-mode jinja2-mode jekyll-modes jedi helm flymake-ruby flycheck-haskell flycheck-color-mode-line find-file-in-repository dockerfile-mode column-marker coffee-mode autopair ag ack-and-a-half ack)))
+    (command-log-mode yasnippet magit ggtags sr-speedbar ace-jump-mode persistent-soft undo-tree ergoemacs-mode helm-ag yasnippet-bundle yaml-mode window-number web-mode sml-mode smartparens sass-mode ruby-block rubocop rspec-mode php-mode nav markdown-mode jinja2-mode jekyll-modes jedi helm flymake-ruby flycheck-haskell flycheck-color-mode-line find-file-in-repository dockerfile-mode column-marker coffee-mode autopair ag ack-and-a-half ack)))
  '(tab-width 2))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
