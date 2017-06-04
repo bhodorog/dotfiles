@@ -11,3 +11,4 @@ source ~/.py.ve/bin/activate
 source virtualenvwrapper.sh
 [[ -d ~/1/.virtualenvs ]] || mkdir ~/1/.virtualenvs
 export WORKON_HOME=~/1/.virtualenvs
+export CDIFF_OPTIONS='-s -w 0'

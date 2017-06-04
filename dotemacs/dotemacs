@@ -1,13 +1,26 @@
-;; automatically switch to lisp-mode for given files
+;;  automatically switch to lisp-mode for given files
 (setq auto-mode-alist (cons '("dotemacs" . lisp-mode) auto-mode-alist))
 (setq auto-mode-alist (cons '("emacscustom" . lisp-mode) auto-mode-alist))
 
-;; enable elpa
+;; elpa like repositories
+;; elpa - official emacs repository (copyright restrictions)
+;; melpa - automated build repository (packages auto built and versioned)
+;; marmelade - authors log in and upload their packges
+;; for details, see
+;; http://blog.jorgenschaefer.de/2014/06/the-sorry-state-of-emacs-lisp-package.html
 (when (>= emacs-major-version 24)
   (require 'package)
   (add-to-list
     'package-archives
-    '("melpa" . "http://melpa.org/packages/")
+    '("gnu" . "http://elpa.gnu.org/packages/")
+    t)
+   (add-to-list
+    'package-archives
+    '("melpa" . "https://stable.melpa.org/packages/")
+    t)
+   (add-to-list
+    'package-archives
+    '("melpa" . "http://marmalade-repo.org/packages/")
     t)
   (package-initialize))
 
@@ -204,6 +217,7 @@ ython  (cond
 
 (defalias 'dtw 'delete-trailing-whitespace)
 (defalias 'los 'view-lossage)
+(defalias 'dpb 'describe-prefix-bindings)
 (defalias 'garm 'global-auto-revert-mode)
 (defalias 'slm 'scroll-lock-mode)
 
@@ -212,6 +226,13 @@ ython  (cond
 ;; Use it with E on marked buffers in ibuffer to revisit buffers to a new location
 ;; (set-visited-file-name (replace-regexp-in-string "adapter-api-bluebottle" "bluebottle-adapter-api" (buffer-file-name)))
 
+;; Run shell commands on regions (useful to copy wrapped lines without the finge character)
+;; (shell-command-on-region (region-beginning) (region-end) "pbcopy")
+
+;; Automatically surround code with matching chars () [] ""
+;; Go to the beginning of the text to be surrounded, Mark Set (C-Spc),
+;; go to the end of the text to be surrounded, press one char of the
+;; pair
 
 
 ; Misc settings
@@ -238,6 +259,13 @@ ython  (cond
  uniquify-buffer-name-style 'post-forward
  uniquify-separator ":")
 
+;; each emacs daemon could get its own directory for backups
+;; (setq emacs-tmp-dir (expand-file-name (format "~/.emacs.d/emacs%d" (emacs-pid)) temporary-file-directory))
+;; (setq emacs-backups-dir (format "%s/backups" emacs-tmp-dir))
+;; (make-directory emacs-tmp-dir)
+;; (make-directory emacs-backups-dir)
+;; to keep it simple autosaves don't get their own dir (e.g. clean up when closing, avoid conflicts, etc)
+
 (setq version-control t               ;; Use version numbers for backups
       kept-new-versions 16            ;; Number of newest versions to keep
       kept-old-versions 2             ;; Number of oldest versions to keep
@@ -245,13 +273,16 @@ ython  (cond
       backup-by-copying-when-linked t ;; Copy linked files, don't rename.
       backup-by-copying t             ;; Don't clobber symlinks
       backup-directory-alist
-      '((".*" . "~/.saves")))          ;; Don't litter my fs tree
+      `((".*" . "~/.emacs.d/backups")))          ;; Don't litter my fs tree
+
+(setq auto-save-file-name-transforms
+      `((".*" ,temporary-file-directory t)))
 
 (put 'narrow-to-region 'disabled nil)
 
-(autoload 'zap-to-char "misc" "Kill up to, but no including occurence of CHAR")
-(global-set-key "\M-z" 'zap-up-to-char)
-(global-set-key "\M-Z" 'zap-to-char)
+;; (autoload 'zap-to-char "misc" "Kill up to, but no including occurence of CHAR")
+;; (global-set-key "\M-z" 'zap-up-to-char)
+;; (global-set-key "\M-Z" 'zap-to-char)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -262,11 +293,13 @@ ython  (cond
  '(package-archives
    (quote
     (("gnu" . "http://elpa.gnu.org/packages/")
-     ("melpa" . "http://melpa.milkbox.net/packages/")
+     ("melpa" . "http://stable.melpa.org/packages/")
      ("marmalade" . "http://marmalade-repo.org/packages/"))))
  '(package-selected-packages
    (quote
-    (command-log-mode yasnippet magit ggtags sr-speedbar ace-jump-mode persistent-soft undo-tree ergoemacs-mode helm-ag yasnippet-bundle yaml-mode window-number web-mode sml-mode smartparens sass-mode ruby-block rubocop rspec-mode php-mode nav markdown-mode jinja2-mode jekyll-modes jedi helm flymake-ruby flycheck-haskell flycheck-color-mode-line find-file-in-repository dockerfile-mode column-marker coffee-mode autopair ag ack-and-a-half ack)))
+    (flx-ido projectile groovy-mode command-log-mode yasnippet magit ggtags sr-speedbar ace-jump-mode persistent-soft undo-tree ergoemacs-mode helm-ag yasnippet-bundle yaml-mode window-number web-mode sml-mode smartparens sass-mode ruby-block rubocop rspec-mode php-mode nav markdown-mode jinja2-mode jekyll-modes jedi helm flymake-ruby flycheck-haskell flycheck-color-mode-line find-file-in-repository dockerfile-mode column-marker coffee-mode autopair ag ack-and-a-half ack)))
+ '(projectile-global-mode t)
+ '(projectile-globally-ignored-file-suffixes (quote ("pyc")))
  '(tab-width 2))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
