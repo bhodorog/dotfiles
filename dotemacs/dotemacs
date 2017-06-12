@@ -20,7 +20,7 @@
     t)
    (add-to-list
     'package-archives
-    '("melpa" . "http://marmalade-repo.org/packages/")
+    '("marmalade" . "http://marmalade-repo.org/packages/")
     t)
   (package-initialize))
 
@@ -34,13 +34,16 @@
 ;; 
 ;; (package-refresh-contents)
 
+
+;; refreshihng the package contents is needed, but not enable to speed up emacs startup
+;; (package-refresh-contents)
 (defun install-if-needed (package)
   (unless (package-installed-p package)
     (package-install package)))
 
 ;; make more packages available with the package installer
 (setq to-install
-      '(web-mode window-number yasnippet jedi auto-complete autopair find-file-in-repository column-marker markdown-mode flycheck haskell-mode sr-speedbar))
+      '(web-mode window-number yasnippet jedi auto-complete autopair find-file-in-repository fill-column-indicator markdown-mode flycheck haskell-mode sr-speedbar))
 ;; nav for quick nav
 
 (mapc 'install-if-needed to-install)
@@ -51,7 +54,8 @@
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (setq flycheck-highlighting-mode 'lines)
 
-(require 'column-marker)
+(require 'fill-column-indicator)
+;; (require 'column-marker)
 
 (require 'dired-x)
 
@@ -97,8 +101,8 @@
    (which-function-mode 1)
    (setq coding-system-for-write 'utf-8)
    (setq fill-column 79)
-   (column-marker-1 79)
-   (column-marker-2 80)
+   ;; (column-marker-1 79)
+   ;; (column-marker-2 80)
    ;; (flymake-ruby-load)
    ))
 
@@ -136,8 +140,9 @@
    (outline-minor-mode t)
    (setq coding-system-for-write 'utf-8)
    (setq fill-column 79)
-   (column-marker-1 79)
-   (column-marker-2 80)
+   (fci-mode)
+   ;; (column-marker-1 79)
+   ;; (column-marker-2 80)
    ))
 
 ;; ;; Flymake settings for Python
