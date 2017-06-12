@@ -50,6 +50,8 @@
 
 (require 'auto-complete)
 
+
+
 (require 'flycheck)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (setq flycheck-highlighting-mode 'lines)
@@ -68,23 +70,26 @@
   (setq web-mode-css-indent-offset 2)
   (setq web-mode-code-indent-offset 2)
 )
-;; (require 'helm-config)
-;; (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-;; (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-;; (add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
-;; (require 'yasnippet-bundle)
+;; ;; (require 'helm-config)
+;; ;; (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+;; ;; (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+;; ;; (add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
+;; ;; (require 'yasnippet-bundle)
+
 (require 'yasnippet)
 (setq yas-global-mode 1)
-(yas/load-directory "~/.emacs.d/snippets/snippets")
-;; (require 'yasnippet)
-;; (yas-global-mode 1)
-;; (setq yas-snippet-dirs
-;;       '("~/.emacs.d/snippets/snippets" ;; personal snippets
-;;         ;; "~/.emacs.d/??" ;; python-mode snippets
-;;         ))
+;; ------- START
+;; (yas/load-directory "~/.emacs.d/snippets/snippets")
+;; ------- END
+;; ;; (require 'yasnippet)
+;; ;; (yas-global-mode 1)
+;; ;; (setq yas-snippet-dirs
+;; ;;       '("~/.emacs.d/snippets/snippets" ;; personal snippets
+;; ;;         ;; "~/.emacs.d/??" ;; python-mode snippets
+;; ;;         ))
 
 
-; auto-complete mode extra settings
+;; auto-complete mode extra settings
 (setq
  ac-auto-start 2
  ac-override-local-map nil
