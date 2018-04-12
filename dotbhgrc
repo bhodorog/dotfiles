@@ -10,10 +10,9 @@ jq_less () {
   else
     JQ_ARGS=$@
   fi
-  jq -C ${JQ_ARGS} | less -RFX
+  jq -C "${JQ_ARGS}" | less -RFX
 }
 alias jql=jq_less
-
 
 # append history rather than rewrite
 shopt -s histappend
@@ -41,6 +40,18 @@ run_on_prompt_command()
     log_bash_persistent_history
     history -a
 }
+
+
+grep_persistent_hist () {
+  if type ggrep >/dev/null 2>&1; then
+    GREP_BINARY=ggrep
+  else
+    GREP_BINARY=grep
+  fi
+  ${GREP_BINARY} "$@" ~/.persistent_history
+}
+alias gph=grep_persistent_hist
+
 
 function _bhg_source_if_exists {
     [[ -f $1 ]] && source $1

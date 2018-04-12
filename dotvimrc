@@ -1,4 +1,5 @@
 " enable pathogen
+filetype on " required for compatibility with Mac OS X, See issue https://github.com/VundleVim/Vundle.vim/issues/167
 filetype off
 runtime bundle/vim-pathogen/autoload/pathogen.vim
 call pathogen#incubate()

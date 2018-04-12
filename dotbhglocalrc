@@ -7,8 +7,8 @@ function _prepend_2_path {
 }
 
 ssh-add -L | grep -q 'bhg@ffx.id_rsa' || ssh-add -K ~/.ssh/bhg@ffx.id_rsa
-source ~/.py.ve/bin/activate
-source virtualenvwrapper.sh
+# source ~/.py.ve/bin/activate
+source $(which virtualenvwrapper.sh)
 [[ -d ~/1/.virtualenvs ]] || mkdir ~/1/.virtualenvs
 export WORKON_HOME=~/1/.virtualenvs
 export CDIFF_OPTIONS='-s -w 0'

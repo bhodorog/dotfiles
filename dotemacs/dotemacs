@@ -20,6 +20,10 @@
     t)
    (add-to-list
     'package-archives
+    '("melpa-nightly" . "https://melpa.org/packages/")
+    t)
+   (add-to-list
+    'package-archives
     '("marmalade" . "http://marmalade-repo.org/packages/")
     t)
   (package-initialize))
@@ -43,7 +47,7 @@
 
 ;; make more packages available with the package installer
 (setq to-install
-      '(web-mode window-number yasnippet jedi auto-complete autopair find-file-in-repository column-marker markdown-mode flycheck haskell-mode sr-speedbar ggtags))
+      '(web-mode window-number yasnippet jedi auto-complete autopair find-file-in-repository fill-column-indicator markdown-mode flycheck haskell-mode sr-speedbar ggtags go-mode))
 ;; nav for quick nav
 ;; ggtags for automatically generate CTAGS files (uses ctags as backend)
 ;; for ctags there are 2 options:
@@ -60,8 +64,12 @@
 (add-hook 'after-init-hook #'global-flycheck-mode)
 (setq flycheck-highlighting-mode 'lines)
 
-(require 'fill-column-indicator)
-;; (require 'column-marker)
+;; (require 'fill-column-indicator)
+;; ^^ disabled because it doesn't play nicely with auto-complete. Feels quite clunky.
+
+(require 'column-marker)
+;; ^^ careful with this one. It's not available anymore in any of the established repositories :(
+;; can still be found on github, but it's quite old and unmaintained. TODO: find a replacement
 
 (require 'dired-x)
 
@@ -149,9 +157,9 @@
    (outline-minor-mode t)
    (setq coding-system-for-write 'utf-8)
    (setq fill-column 79)
-   (fci-mode)
-   ;; (column-marker-1 79)
-   ;; (column-marker-2 80)
+   ;; (fci-mode)
+   (column-marker-1 79)
+   (column-marker-2 80)
    ))
 
 ;; ;; Flymake settings for Python
@@ -321,6 +329,7 @@ ython  (cond
  '(custom-safe-themes
    (quote
     ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" default)))
+ '(flx-ido-mode 1)
  '(markdown-command "kramdown")
  '(package-archives
    (quote
@@ -329,12 +338,10 @@ ython  (cond
      ("marmalade" . "http://marmalade-repo.org/packages/"))))
  '(package-selected-packages
    (quote
-    (solarized-theme jinja2-mode flx-ido projectile groovy-mode command-log-mode yasnippet magit ggtags sr-speedbar ace-jump-mode persistent-soft undo-tree ergoemacs-mode helm-ag yasnippet-bundle yaml-mode window-number web-mode sml-mode smartparens sass-mode ruby-block rubocop rspec-mode php-mode nav markdown-mode jekyll-modes jedi helm flymake-ruby flycheck-haskell flycheck-color-mode-line find-file-in-repository dockerfile-mode column-marker coffee-mode autopair ag ack-and-a-half ack)))
+    (yasnippet-snippets go-mode solarized-theme jinja2-mode flx-ido projectile groovy-mode command-log-mode yasnippet magit ggtags sr-speedbar ace-jump-mode persistent-soft undo-tree ergoemacs-mode helm-ag yasnippet-bundle yaml-mode window-number web-mode sml-mode smartparens sass-mode ruby-block rubocop rspec-mode php-mode nav markdown-mode jekyll-modes jedi helm flymake-ruby flycheck-haskell flycheck-color-mode-line find-file-in-repository dockerfile-mode column-marker coffee-mode autopair ag ack-and-a-half ack)))
  '(projectile-global-mode t)
  '(projectile-globally-ignored-file-suffixes (quote ("pyc")))
- '(flx-ido-mode 1)
- '(setq ido-enable-flex-matching t)
- '(setq ido-use-faces nil)
+ '(setq ido-use-faces)
  '(tab-width 2))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
