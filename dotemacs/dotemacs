@@ -18,10 +18,10 @@
     'package-archives
     '("melpa" . "https://stable.melpa.org/packages/")
     t)
-   (add-to-list
-    'package-archives
-    '("melpa-nightly" . "https://melpa.org/packages/")
-    t)
+;;   (add-to-list
+;;    'package-archives
+;;    '("melpa-nightly" . "https://melpa.org/packages/")
+;;    t)
    (add-to-list
     'package-archives
     '("marmalade" . "http://marmalade-repo.org/packages/")
@@ -89,7 +89,7 @@
 ;; (add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
 ;; (require 'yasnippet-bundle)
 (require 'yasnippet)
-(setq yas-global-mode 1)
+(yas-global-mode)
 ;; ------- START
 ;; (yas/load-directory "~/.emacs.d/snippets/snippets")
 ;; ------- END
@@ -338,7 +338,7 @@ ython  (cond
      ("marmalade" . "http://marmalade-repo.org/packages/"))))
  '(package-selected-packages
    (quote
-    (yasnippet-snippets go-mode solarized-theme jinja2-mode flx-ido projectile groovy-mode command-log-mode yasnippet magit ggtags sr-speedbar ace-jump-mode persistent-soft undo-tree ergoemacs-mode helm-ag yasnippet-bundle yaml-mode window-number web-mode sml-mode smartparens sass-mode ruby-block rubocop rspec-mode php-mode nav markdown-mode jekyll-modes jedi helm flymake-ruby flycheck-haskell flycheck-color-mode-line find-file-in-repository dockerfile-mode column-marker coffee-mode autopair ag ack-and-a-half ack)))
+    (go-mode solarized-theme jinja2-mode flx-ido projectile groovy-mode command-log-mode yasnippet magit ggtags sr-speedbar ace-jump-mode persistent-soft undo-tree ergoemacs-mode helm-ag yaml-mode window-number web-mode sml-mode smartparens sass-mode ruby-block rubocop rspec-mode php-mode nav markdown-mode jekyll-modes jedi helm flymake-ruby flycheck-haskell flycheck-color-mode-line find-file-in-repository dockerfile-mode column-marker coffee-mode autopair ag ack-and-a-half ack)))
  '(projectile-global-mode t)
  '(projectile-globally-ignored-file-suffixes (quote ("pyc")))
  '(setq ido-use-faces)
