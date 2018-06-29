@@ -208,6 +208,9 @@
   (global-set-key (kbd "M-\"") 'ivy-avy) ;; the default C-' is not available under iTerm on OSX
   (global-set-key (kbd "C-c C-r") 'ivy-resume))
 
+(use-package ivy-hydra
+  :ensure t)
+
 (use-package projectile
   :ensure t
   :init
@@ -316,7 +319,13 @@
   (global-set-key (kbd "C-c a") 'counsel-ag)
   (global-set-key (kbd "C-c r") 'counsel-rg)
   (global-set-key (kbd "C-x l") 'counsel-locate)
-  (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history))
+  (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
+  (setq counsel-find-file-ignore-regexp ".*\.pyc$")
+  )
+
+(use-package magit
+  :ensure t
+  :bind (("C-x g" . magit-status)))
 
 (use-package yasnippet-snippets
   :ensure t

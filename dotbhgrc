@@ -3,6 +3,8 @@ alias tree='tree -C'
 alias ackl='ack --pager "less -R"'
 alias vi=vim
 alias emc='emacsclient -nw'
+alias fphr='cat ~/.persistent_history | fzf --tac +s'
+alias fph='cat ~/.persistent_history | fzf --tac +s --bind="alt-p:toggle-preview" --preview-window="down:wrap" --preview="echo {}" | sed "s/^[^|]*| //" | pbcopy'
 
 jq_less () {
   if [[ $@ = "" ]]; then
