@@ -140,6 +140,7 @@
 (setq tab-always-indent 'complete)
 
 (unless (package-installed-p 'use-package)
+  (package-refresh-contents)
   (package-install 'use-package))
 
 ;; misc old bhg
