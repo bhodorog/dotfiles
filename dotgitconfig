@@ -16,7 +16,7 @@
 [core]
 	excludesfile = /Users/bogdan.hodorog/.gitignore_global
 [user]
-	email = bogdan.hodorog@domain.com.au
+	email = bogdan.hodorog@gmail.com
 	name = Bogdan Hodorog
 [color]
     ui = auto
