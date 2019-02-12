@@ -2,9 +2,10 @@ set-option -g prefix C-q
 unbind-key C-b
 bind-key C-q send-prefix
 set-option -g history-limit 5000
+
 # Uncomment these when you want to use a different login shell (e.g. OSX
 # homebrew's bash)
-set -g default-shell "/usr/local/bin/bash"
+# set -g default-shell "/usr/local/bin/bash"
 # set -g default-command "exec /usr/local/bin/bash"
 # set -g default-command "/usr/local/bin/bash --login"
 set -g update-environment -r
@@ -25,4 +26,3 @@ set-option -g status-right '| ttys:#(sudo lsof -c tmux | grep 'dev/ptmx' | wc -l
 
 set-option -g status-keys emacs
 set-window-option -g mode-keys emacs
-
