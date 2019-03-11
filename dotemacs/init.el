@@ -217,7 +217,7 @@
   :init
   (setq projectile-completion-system 'ivy)
   :config
-  (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   (projectile-global-mode +1)
   (add-to-list 'projectile-globally-ignored-file-suffixes "pyc"))
 
@@ -286,6 +286,11 @@
   (add-hook 'after-init-hook #'global-flycheck-mode)
   (setq flycheck-highlighting-mode 'lines))
 
+;; (use-package flycheck
+;;   :no-require t
+;;   :config
+;;   (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup))
+
 
 ;; (use-package window-number
 ;;   :ensure t
@@ -298,8 +303,10 @@
   :ensure t
   :config
   (global-set-key (kbd "M-p") 'ace-window)
-  (global-set-key (kbd "s-w") 'ace-window)
-  (global-set-key [remap other-window] 'ace-window))
+  (global-set-key (kbd "s-w") 'ace-window))
+;; disabled for now due to sometime determining there are 3 windows
+;; when there are clearly just 2
+;;  (global-set-key [remap other-window] 'ace-window))
 
 (use-package swiper
   :ensure t

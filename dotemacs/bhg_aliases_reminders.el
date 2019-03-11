@@ -58,3 +58,7 @@
 ;; (let ((govet (flycheck-checker-get 'go-vet 'command)))
 ;;   (when (equal (cadr govet) "tool")
 ;;     (setf (cdr govet) (cddr govet))))
+
+;; ivy
+;; use the typed text and don't auto-complete to the nearest candidate
+;; C-M-j
