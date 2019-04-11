@@ -1,5 +1,3 @@
-
-
 ; Shortening of often used commands
 (defalias 'tswh 'toggle-split-width-threshold)
 (defalias 'gf 'grep-find)
@@ -55,3 +53,8 @@
 
 ;; To highlight the line where the cursor is (globally)
 ;; (global-hl-line-mode +1)
+
+;; fix go-mode go-vet command
+;; (let ((govet (flycheck-checker-get 'go-vet 'command)))
+;;   (when (equal (cadr govet) "tool")
+;;     (setf (cdr govet) (cddr govet))))
