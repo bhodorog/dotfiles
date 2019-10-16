@@ -1,0 +1,307 @@
+;;  automatically switch to lisp-mode for given files
+(setq auto-mode-alist (cons '("dotemacs" . lisp-mode) auto-mode-alist))
+(setq auto-mode-alist (cons '("emacscustom" . lisp-mode) auto-mode-alist))
+
+;; elpa like repositories
+;; elpa - official emacs repository (copyright restrictions)
+;; melpa - automated build repository (packages auto built and versioned)
+;; marmelade - authors log in and upload their packges
+;; for details, see
+;; http://blog.jorgenschaefer.de/2014/06/the-sorry-state-of-emacs-lisp-package.html
+(when (>= emacs-major-version 24)
+  (require 'package)
+  (add-to-list
+    'package-archives
+    '("gnu" . "http://elpa.gnu.org/packages/")
+    t)
+   (add-to-list
+    'package-archives
+    '("melpa" . "https://stable.melpa.org/packages/")
+    t)
+  ;; (add-to-list
+  ;;  'package-archives
+  ;;  '("melpa-nightly" . "https://melpa.org/packages/")
+  ;;  t)
+   (add-to-list
+    'package-archives
+    '("marmalade" . "http://marmalade-repo.org/packages/")
+    t)
+  (package-initialize))
+
+;; Prerequisite: Emacs >= 24
+;; (require 'package)
+;; (package-initialize)
+;; (add-to-list 'package-archives
+;; 	     '("melpa" . "http://melpa.milkbox.net/packages/") t)
+;; (add-to-list 'package-archives
+;; 	     '("marmalade" . "https://marmalade-repo.org/packages/") t)
+;;
+;; (package-refresh-contents)
+
+
+;; refreshihng the package contents is needed, but not enable to speed up emacs startup
+;; (package-refresh-contents)
+(defun install-if-needed (package)
+  (unless (package-installed-p package)
+    (package-install package)))
+
+;; make more packages available with the package installer
+(setq to-install
+      '(web-mode window-number yasnippet wgrep wgrep-ag iedit projectile counsel counsel-projectile jedi auto-complete autopair find-file-in-repository fill-column-indicator markdown-mode flycheck haskell-mode sr-speedbar ggtags go-mode))
+;; nav for quick nav
+;; ggtags for automatically generate CTAGS files (uses ctags as backend)
+;; for ctags there are 2 options:
+;;     - the original sourceforge ctgs
+;;     - the newer fork universal-tags which tries to continues that project
+
+(mapc 'install-if-needed to-install)
+
+(require 'auto-complete)
+
+
+
+;; (require 'flycheck)
+;; (add-hook 'after-init-hook #'global-flycheck-mode)
+;; (setq flycheck-highlighting-mode 'lines)
+
+;; (require 'fill-column-indicator)
+;; ^^ disabled because it doesn't play nicely with auto-complete. Feels quite clunky.
+
+;; (require 'column-marker)
+;; ^^ careful with this one. It's not available anymore in any of the established repositories :(
+;; can still be found on github, but it's quite old and unmaintained. TODO: find a replacement
+
+;; (require 'dired-x)
+
+;; (require 'window-number)
+;; (window-number-mode 1)
+
+(require 'web-mode)
+(defun my-web-mode-hook ()
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
+)
+;; don't enable helm, but keep it at the ready
+;; (require 'helm-config)
+;; (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+;; (add-to-list 'auto-mode-alist '("\\.css\\'" . web-mode))
+;; (require 'yasnippet-bundle)
+(require 'yasnippet)
+(yas-global-mode)
+;; ------- START
+;; (yas/load-directory "~/.emacs.d/snippets/snippets")
+;; ------- END
+;; ;; (require 'yasnippet)
+;; ;; (yas-global-mode 1)
+;; ;; (setq yas-snippet-dirs
+;; ;;       '("~/.emacs.d/snippets/snippets" ;; personal snippets
+;; ;;         ;; "~/.emacs.d/??" ;; python-mode snippets
+;; ;;         ))
+
+
+;; auto-complete mode extra settings
+(setq
+ ac-auto-start 2
+ ac-override-local-map nil
+ ac-use-menu-map t
+ ac-candidate-limit 20)
+
+;; (require 'flymake-ruby)
+
+(add-hook
+ 'ruby-mode-hook
+ (lambda ()
+   (setq show-trailing-whitespace t)
+   (outline-minor-mode t)
+   (which-function-mode 1)
+   (setq coding-system-for-write 'utf-8)
+   (setq fill-column 79)
+   ;; (column-marker-1 79)
+   ;; (column-marker-2 80)
+   ;; (flymake-ruby-load)
+   ))
+
+(require 'jedi)
+;; It's also required to run "pip install --user jedi" and "pip
+;; install --user epc" to get the Python side of the library work
+;; correctly.
+;; With the same interpreter you're using.
+
+;; if you need to change your python intepreter, if you want to change it
+;; (setq jedi:server-command
+;;       '("python2" "/path/to/.emacs.d/elpa/jedi-0.1.2/jediepcserver.py"))
+
+(require 'haskell-interactive-mode)
+(require 'haskell-process)
+(add-hook 'haskell-mode-hook
+          (lambda ()
+            (interactive-haskell-mode)))
+
+;; (eval-after-load "haskell-mode" '(define-key haskell-mode-map (kbd "C-c C-c" ) 'haskell-compile))
+;; (eval-after-load "haskell-cabal" '(define-key haskell-mode-map (kbd "C-c C-c" ) 'haskell-compile))
+
+(add-hook
+ 'python-mode-hook
+ (lambda ()
+   (jedi:setup)
+   (jedi:ac-setup)
+   (local-set-key "\C-cd" 'jedi:show-doc)
+   (local-set-key (kbd "M-SPC") 'jedi:complete)
+   (local-set-key (kbd "M-.") 'jedi:goto-definition)
+   (setq show-trailing-whitespace t)
+   (electric-pair-mode t)
+   ;; (yas/minor-mode-on)
+   (which-function-mode 1)
+   (outline-minor-mode t)
+   (setq coding-system-for-write 'utf-8)
+   (setq fill-column 79)
+   ;; (fci-mode)
+   (column-marker-1 79)
+   (column-marker-2 80)
+   ))
+
+;; ;; Flymake settings for Python
+;; (defun flymake-python-init ()
+;;   (let* ((temp-file (flymake-init-create-temp-buffer-copy
+;;                      'flymake-create-temp-inplace))
+;;          (local-file (file-relative-name
+;;                       temp-file
+;;                       (file-name-directory buffer-file-name))))
+;;     (list "~/.epylint" (list local-file))))
+
+;; (defun flymake-activate ()
+;;   "Activates flymake when real buffer and you have write access"
+;;   (if (and
+;;        (buffer-file-name)
+;;        (file-writable-p buffer-file-name))
+;;       (progn
+;;         (flymake-mode t)
+;;         ;; this is necessary since there is no flymake-mode-hook...
+;;         (local-set-key (kbd "C-c n") 'flymake-goto-next-error)
+;;         (local-set-key (kbd "C-c p") 'flymake-goto-prev-error))))
+
+;; (defun ca-flymake-show-help ()
+;;   (when (get-char-property (point) 'flymake-overlay)
+;;     (let ((help (get-char-property (point) 'help-echo)))
+;;       (if help (message "%s" help)))))
+
+;; (add-hook 'post-command-hook 'ca-flymake-show-help)
+
+
+;; (add-to-list 'flymake-allowed-file-name-masks
+;;              '("\\.py\\'" flymake-python-init))
+
+
+;; (add-hook 'python-mode-hook 'flymake-activate)
+(add-hook 'python-mode-hook 'auto-complete-mode)
+
+;; (global-set-key [(meta /)] 'dabbrev-expand)
+;; (global-set-key [(control /)] 'hippie-expand)
+;(global-set-key (kbd "\C-x \C-b") 'ibuffer)
+;; toggle showing whitespace globally
+(global-set-key (kbd "\C-c \C-w")
+                (lambda ()
+                  (interactive)
+                  (setq show-trailing-whitespace
+                        (not show-trailing-whitespace))))
+;; (global-set-key (kbd "\C-x a r") 'align-regexp)
+
+;; Toggle between values which works for my specific screen resolution
+;; changes to force opening a new split vertically
+(defun toggle-split-width-threshold ()
+  (interactive)
+  (setq origin-split-width-threshold split-width-threshold)
+python  (cond
+   ((eq origin-split-width-threshold 100) (setq split-width-threshold 240))
+   ((eq origin-split-width-threshold 240) (setq split-width-threshold 100))
+   ))
+
+
+
+; Misc settings
+;(transient-mark-mode t)
+;(show-paren-mode t)
+;(column-number-mode t)
+;(setq scroll-step 1)
+;(delete-selection-mode nil)
+;(setq inhibit-splash-screen -1)
+;(cua-selection-mode t)
+;(setq-default indent-tabs-mode nil)   ;; Don't use tabs to indent
+;(setq-default tab-width 4)            ;; Still if tabs are enabled make sure they're consistent
+;(defvaralias 'c-basic-offset 'tab-width)        ;; Override the default
+;(defvaralias 'cperl-indent-level 'tab-width)    ;; Override the default
+;(setq tab-stop-list (number-sequence 4 120 4))  ;; Use 4, 8, 12, 16 ... as tab stops when everything fails
+;(visual-line-mode t)
+;(tool-bar-mode nil)
+;(menu-bar-mode -1)                    ;; Disable menu bar, make space on the screen
+(ido-mode 1)
+(ido-everywhere 1)
+;(defalias 'yes-or-no-p 'y-or-n-p)     ;; Use y-n instead of verbose yes-no
+;(require 'uniquify)                   ;; Differentiate among buffers with the same name
+;(setq
+; uniquify-buffer-name-style 'post-forward
+; uniquify-separator ":")
+
+;; each emacs daemon could get its own directory for backups
+;; (setq emacs-tmp-dir (expand-file-name (format "~/.emacs.d/emacs%d" (emacs-pid)) temporary-file-directory))
+;; (setq emacs-backups-dir (format "%s/backups" emacs-tmp-dir))
+;; (make-directory emacs-tmp-dir)
+;; (make-directory emacs-backups-dir)
+;; to keep it simple autosaves don't get their own dir (e.g. clean up when closing, avoid conflicts, etc)
+
+;; (setq version-control t               ;; Use version numbers for backups
+;;       kept-new-versions 16            ;; Number of newest versions to keep
+;;       kept-old-versions 2             ;; Number of oldest versions to keep
+;;       delete-old-versions t           ;; Ask to delete excess backup versions?
+;;       backup-by-copying-when-linked t ;; Copy linked files, don't rename.
+;;       backup-by-copying t             ;; Don't clobber symlinks
+;;       backup-directory-alist
+;;       `((".*" . "~/.emacs.d/backups")))          ;; Don't litter my fs tree
+
+;; (setq auto-save-file-name-transforms
+;;       `((".*" ,temporary-file-directory t)))
+
+;; (put 'narrow-to-region 'disabled nil)
+
+;; (autoload 'zap-to-char "misc" "Kill up to, but no including occurence of CHAR")
+;; (global-set-key "\M-z" 'zap-up-to-char)
+;; (global-set-key "\M-Z" 'zap-to-char)
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(ansi-color-faces-vector
+   [default default default italic underline success warning error])
+ '(ansi-color-names-vector
+   ["#242424" "#e5786d" "#95e454" "#cae682" "#8ac6f2" "#333366" "#ccaa8f" "#f6f3e8"])
+ '(custom-safe-themes
+   (quote
+    ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" default)))
+ '(flx-ido-mode 1)
+ ;; '(markdown-command "kramdown")
+ '(package-archives
+   (quote
+    (("gnu" . "http://elpa.gnu.org/packages/")
+     ("melpa" . "http://stable.melpa.org/packages/")
+     ("marmalade" . "http://marmalade-repo.org/packages/"))))
+ '(package-selected-packages
+   (quote
+    (counsel go-mode solarized-theme jinja2-mode flx-ido projectile groovy-mode command-log-mode yasnippet magit ggtags sr-speedbar ace-jump-mode persistent-soft undo-tree ergoemacs-mode helm-ag yaml-mode window-number web-mode sml-mode smartparens sass-mode ruby-block rubocop rspec-mode php-mode nav markdown-mode jekyll-modes jedi helm flymake-ruby flycheck-haskell flycheck-color-mode-line find-file-in-repository dockerfile-mode column-marker coffee-mode autopair ag ack-and-a-half ack)))
+ '(projectile-global-mode t)
+ '(projectile-globally-ignored-file-suffixes (quote ("pyc")))
+ '(setq ido-use-faces)
+ '(tab-width 2))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(flycheck-error ((t (:background "white" :foreground "red" :underline t))))
+ '(flycheck-info ((t (:background "white" :foreground "green" :underline t))))
+ '(flycheck-warning ((t (:background "white" :foreground "yellow" :underline t))))
+ '(font-lock-function-name-face ((t (:foreground "color-27")))))
+(put 'set-goal-column 'disabled nil)
