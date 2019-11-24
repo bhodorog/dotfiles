@@ -55,6 +55,14 @@ grep_persistent_hist () {
 alias gph=grep_persistent_hist
 
 
+function _add_2_path {
+    [[ -d $1 ]] && export PATH=$PATH:$1
+}
+
+function _prepend_2_path {
+    [[ -d $1 ]] && export PATH=$1:$PATH
+}
+
 function _bhg_source_if_exists {
     [[ -f $1 ]] && source $1
 }
