@@ -249,26 +249,28 @@
   :bind (("C-c i" . imenu-anywhere)
          ("s-i" . imenu-anywhere)))
 
-(use-package flycheck-pycheckers
-  :ensure t
-  :config
-  (setq flycheck-pycheckers-checkers (quote (flake8 pylint))))
+;; (use-package flycheck-pycheckers
+;;   :ensure t
+;;   :config
+;;   (setq flycheck-pycheckers-checkers (quote (flake8 pylint))))
 
 (use-package flycheck
   :ensure t
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode)
-  (setq flycheck-highlighting-mode 'lines))
+  (setq flycheck-highlighting-mode 'lines)
+  (setq flycheck-disable-checkers '(python-pylint))
+)
 
 
 ;; flycheck's main feature is the ability to run all the checkers at
 ;; the same time vs sequentially or chained as flycheck
 ;; we use no-require since the hook needs to be added
 ;; (with-eval-after-load 'flycheck ...)
-(use-package flycheck
-  :no-require t
-  :config
-  (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup))
+;; (use-package flycheck
+;;   :no-require t
+;;   :config
+;;   (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup))
 
 
 ;; (use-package window-number
