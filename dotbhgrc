@@ -1,3 +1,6 @@
+#export BHG_DEBUG='v'
+#[[ ${BHG_DEBUG} == 'v'* ]] && echo 'DEBUGING'
+
 alias ls='ls -G'
 alias tree='tree -C'
 alias ackl='ack --pager "less -R"'
@@ -5,6 +8,8 @@ alias vi=vim
 alias emc='emacsclient -nw'
 alias fphr='cat ~/.persistent_history | fzf --tac +s'
 alias fph='cat ~/.persistent_history | fzf --tac +s --bind="alt-p:toggle-preview" --preview-window="down:wrap" --preview="echo {}" | sed "s/^[^|]*| //" | pbcopy'
+alias tstmp='date +%y%m%d%H%M%S'
+alias cdiffs='cdiff -s -w 0'
 
 jq_less () {
   if [[ $@ = "" ]]; then
@@ -64,16 +69,26 @@ function _prepend_2_path {
 }
 
 function _bhg_source_if_exists {
+    [[ ${BHG_DEBUG} == 'v'* ]] && ([[ -f $1 ]] && echo "$1 exists" || echo "$1 doesn't exist")
     [[ -f $1 ]] && source $1
 }
 PROMPT_COMMAND='log_bash_persistent_history'
 
 which brew &>/dev/null && BREW_PREFIX=$(brew --prefix)
+which brew &>/dev/null && GIT_BREW_PREFIX=$(brew --prefix git)
+which brew &>/dev/null && BASH_COMPLETION_2_BREW_PREFIX=$(brew --prefix bash-completion@2)
 
+# use existing homebrew v1 completions
+# IMPORTANT: the following will work only for bash versions > 4 (echo $BASH_VERSION)
+export BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"
+
+# export BASH_COMPLETION_DEBUG=true
 # needs to homebrew git (to have git-prompt.sh and git-completion.sh installed in bash_completion.d
-[[ -n $BREW_PREFIX ]] && _bhg_source_if_exists $BREW_PREFIX/etc/bash_completion
-[[ -n $BREW_PREFIX ]] && _bhg_source_if_exists $BREW_PREFIX/etc/bash_completion.d/git-prompt.sh
-[[ -n $BREW_PREFIX ]] && _bhg_source_if_exists $BREW_PREFIX/etc/bash_completion.d/git-completion.sh
+[[ -n $BASH_COMPLETION_2_BREW_PREFIX ]] && _bhg_source_if_exists $BASH_COMPLETION_2_BREW_PREFIX/etc/profile.d/bash_completion.sh
+
+# the next line shouldn't be needed due to setting BASH_COMPLETION_COMPAT_DIR above.
+# [[ -n $GIT_BREW_PREFIX ]] && _bhg_source_if_exists $GIT_BREW_PREFIX/etc/bash_completion.d/git-prompt.sh
+# [[ -n $GIT_BREW_PREFIX ]] && _bhg_source_if_exists $GIT_BREW_PREFIX/etc/bash_completion.d/git-completion.bash
 
 # customize PS1
 function _bhg_color_ps1 {
@@ -91,7 +106,8 @@ function _bhg_color_ps1 {
     # [[ -e $(which rvm) ]] && export PS1="(\$(~/.rvm/bin/rvm-prompt))$PS1"
 }
 
-[[ -n $BREW_PREFIX ]] && [[ -f $BREW_PREFIX/etc/bash_completion ]] && _bhg_color_ps1
+
+[[ -n $GIT_BREW_PREFIX ]] && [[ -d $GIT_BREW_PREFIX/etc/bash_completion.d ]] && _bhg_color_ps1
 #[[ -n $(brew --prefix bash-git-prompt) ]] && _bhg_color_ps1
 
 # source specific configs

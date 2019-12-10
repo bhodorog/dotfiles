@@ -5,8 +5,8 @@ set-option -g history-limit 5000
 
 # Uncomment these when you want to use a different login shell (e.g. OSX
 # homebrew's bash)
-# set -g default-shell "/usr/local/bin/bash"
-# set -g default-command "exec /usr/local/bin/bash"
+set -g default-shell "/usr/local/bin/bash"
+# set -g default-command "exec /usr/local/bin/bash"i
 # set -g default-command "/usr/local/bin/bash --login"
 set -g update-environment -r
 set -g default-terminal "xterm-256color"
@@ -16,8 +16,8 @@ set -g default-terminal "xterm-256color"
 # set -g @resurrect-save 'C-M-S'
 # set -g @resurrect-restore 'C-M-R'
 # invert the colours for selected window in the status bar
-set-window-option -g window-status-current-fg "green"
-set-window-option -g window-status-current-bg "black"
+#set-window-option -g window-status-current-fg "green"
+#set-window-option -g window-status-current-bg "black"
 set-option -g status-left-length 20
 
 # to avoid "create session failed: /usr/local/bin/bash --login: Device not configured"
@@ -26,3 +26,6 @@ set-option -g status-right '| ttys:#(sudo lsof -c tmux | grep 'dev/ptmx' | wc -l
 
 set-option -g status-keys emacs
 set-window-option -g mode-keys emacs
+
+bind-key S choose-window "join-pane -v -s "%%""
+bind-key V choose-window "join-pane -h -s "%%""

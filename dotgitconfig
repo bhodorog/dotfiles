@@ -1,5 +1,6 @@
 [alias]
     gr = log --graph --full-history --color --pretty=tformat:"%x1b[31m%h%x09%x1b[32m%d%x1b[33m{%an}%x1b[0m%x20%s%x20%x1b[0m%x20%x1b[34m[%cr%x20%x1b[36m%cd]"
+    dag = log --graph --format='format:%C(yellow)%h%C(reset) %C(blue)"%an" <%ae>%C(reset) %C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%n%s' --date-order
     logt = log --color --pretty=tformat:"%x1b[31m%h%x09%x1b[32m%d%x1b[33m{%an}%x1b[0m%x20%s%x20%x1b[0m%x20%x1b[34m[%cr%x20%x1b[36m%cd%x20%aD]"
     co = checkout
     st = status
@@ -15,6 +16,7 @@
 
 [core]
 	excludesfile = /Users/bogdan.hodorog/.gitignore_global
+    pager=less -FMRiX
 [user]
 	email = bogdan.hodorog@gmail.com
 	name = Bogdan Hodorog

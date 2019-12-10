@@ -1,34 +1,3 @@
-;;  automatically switch to lisp-mode for given files
-(setq auto-mode-alist (cons '("dotemacs" . lisp-mode) auto-mode-alist))
-(setq auto-mode-alist (cons '("emacscustom" . lisp-mode) auto-mode-alist))
-
-
-;; elpa like repositories
-;; elpa - official emacs repository (copyright restrictions)
-;; melpa - automated build repository (packages auto built and versioned)
-;; marmelade - authors log in and upload their packges
-;; for details, see
-;; http://blog.jorgenschaefer.de/2014/06/the-sorry-state-of-emacs-lisp-package.html
-(when (>= emacs-major-version 24)
-  (require 'package)
-
-  (add-to-list 'package-archives
-               '("melpa-stable" . "https://stable.melpa.org/packages/") t)
-  ;; (add-to-list 'package-archives
-  ;;              '("melpa" . "https://melpa.org/packages/") t)
-  ;; (add-to-list 'package-archives
-  ;;              '("marmalade" . "https://marmalade-repo.org/packages/") t)
-
-  ;; keep the installed packages in .emacs.d
-  (setq package-user-dir (expand-file-name "elpa" user-emacs-directory))
-
-  ;; this makes every single start very slow. Use it with care!
-  ;; update the package metadata if the local cache is missing
-  ;; (unless package-archive-contents
-  ;;   (package-refresh-contents))
-  (package-initialize)
-)
-
 ;; Always load newest byte code
 (setq load-prefer-newer t)
 
@@ -350,63 +319,6 @@
   :config
   (yas-global-mode))
 
-;; It's also required to run "pip install --user jedi" and "pip
-;; install --user epc" to get the Python side of the library work
-;; correctly.
-;; With the same interpreter you're using.
-
-;; if you need to change your python intepreter, if you want to change it
-;; (setq jedi:server-command
-;;       '("python2" "/path/to/.emacs.d/elpa/jedi-0.1.2/jediepcserver.py"))
-;; requires external jedi and epc (pip install)
-(use-package jedi
-  :ensure t
-  :init
-  (add-hook 'python-mode-hook 'jedi:setup)
-  ;; (add-hook 'python-mode-hook 'jedi:ac-setup)
-  )
-
-;; (use-package auto-complete
-;;   :ensure t
-;;   :config
-;;   (setq ac-auto-start 2
-;;         ac-override-local-map nil
-;;         ac-use-menu-map t
-;;         ac-candidate-limit 20)
-;;   (add-hook 'python-mode-hook 'auto-complete-mode))
-
-(use-package company
-  :ensure t
-  :config
-  (global-company-mode))
-
-(defun my/python-mode-hook()
-  (add-to-list 'company-backends 'company-jedi))
-
-(use-package company-jedi
-  :ensure t
-  :init
-  (add-hook 'python-mode-hook 'my/python-mode-hook)
-  )
-
-(use-package python
-  :ensure t)
-
-(add-hook
- 'python-mode-hook
- (lambda ()
-   (local-set-key (kbd "C-c d") 'jedi:show-doc)
-   (local-set-key (kbd "M-SPC") 'jedi:complete)
-   (local-set-key (kbd "M-.") 'jedi:goto-definition)
-   (setq show-trailing-whitespace t)
-   (electric-pair-mode t)
-   ;; (yas/minor-mode-on)
-   (which-function-mode 1)
-   (outline-minor-mode t)
-   (setq coding-system-for-write 'utf-8)
-   (setq fill-column 79)
-   ;; (fci-mode)
-   ))
-
-
 ;;; init.el ends here
+
+(provide 'bhg-init-everything)
