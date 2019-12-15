@@ -3,3 +3,4 @@
 (require 'bhg-init-packages)
 (require 'bhg-init-everything)
 (require 'bhg-init-elpy)
+;; (require 'bhg-init-python-mode)

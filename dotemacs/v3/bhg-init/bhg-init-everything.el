@@ -188,7 +188,9 @@
   :config
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   (projectile-global-mode +1)
-  (add-to-list 'projectile-globally-ignored-file-suffixes "pyc"))
+  (add-to-list 'projectile-globally-ignored-file-suffixes "pyc")
+  (add-to-list 'projectile-globally-ignored-directories ".mypy_cache")
+  )
 
 ;; requires exernal  markdown processor: e.g. kramdown
 (use-package markdown-mode
@@ -309,7 +311,7 @@
   (global-set-key (kbd "C-c r") 'counsel-rg)
   (global-set-key (kbd "C-x l") 'counsel-locate)
   (define-key minibuffer-local-map (kbd "C-r") 'counsel-minibuffer-history)
-  (setq counsel-find-file-ignore-regexp ".*\.pyc$")
+  (setq counsel-find-file-ignore-regexp "\(?:\.pyc\)\|\(?:\.mypy_cache\)")
   )
 
 (use-package magit

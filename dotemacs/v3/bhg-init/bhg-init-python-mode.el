@@ -40,6 +40,20 @@
 (use-package python
   :ensure t)
 
+(use-package python-black
+  :ensure t
+  :demand t
+  :after python
+  :bind ("C-c y b" . python-black-buffer)
+  )
+
+(use-package py-isort
+  :ensure t
+  :demand t
+  :after python
+  :bind ("C-c y s" . py-isort-buffer)
+  )
+
 (add-hook
  'python-mode-hook
  (lambda ()
