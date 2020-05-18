@@ -66,7 +66,7 @@
    (which-function-mode 1)
    (outline-minor-mode t)
    (setq coding-system-for-write 'utf-8)
-   (setq fill-column 79)
+   (setq fill-column 120)
    ;; (fci-mode)
    ))
 

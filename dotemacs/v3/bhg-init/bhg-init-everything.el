@@ -262,6 +262,7 @@
   (add-hook 'after-init-hook #'global-flycheck-mode)
   (setq flycheck-highlighting-mode 'lines)
   (setq flycheck-disable-checkers '(python-pylint))
+  (setq flycheck-flake8-maximum-line-length 120)
 )
 
 
