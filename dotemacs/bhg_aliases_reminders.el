@@ -47,6 +47,10 @@
 ;; 2. Q
 ; or
 ;; 1. projectile-replace{,-regexp}
+; or
+;; 1. Use swiper (C-c s) or counsel-rg (C-c r)
+;; 2. Use ivy-occur on the results (C-c C-o)
+;; 3. Enable ivy-wgrep-change-to-wgrep-mode (w) in the ivy-occur buffer
 
 ;; projectile settings
 ;; (setq projectile-completion-system 'ivy)
@@ -62,3 +66,9 @@
 ;; ivy
 ;; use the typed text and don't auto-complete to the nearest candidate
 ;; C-M-j
+;; toggle between verbatim regexp search or ivy-preferred-re-builders list
+;; M-r (e.g. while swiper is running)
+
+
+;; change default indent-level for JavaScipt mode (json files)
+;; C-h v js-indent-level -> customize

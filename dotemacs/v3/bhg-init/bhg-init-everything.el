@@ -73,6 +73,7 @@
 (setq-default indent-tabs-mode nil)		;; don't use tabs to indent
 (setq-default tab-width 4)			;; if tabs are enabled make sure they're consistent
 (setq tab-stop-list (number-sequence 4 120 4))  ;; Use 4, 8, 12, 16 ... as tab stops when everything fails
+(setq-default js-indent-level 2)
 
 
 ;; Newline at end of file
@@ -263,6 +264,19 @@
   (setq flycheck-highlighting-mode 'lines)
   (setq flycheck-disable-checkers '(python-pylint))
   (setq flycheck-flake8-maximum-line-length 120)
+
+  (flycheck-define-checker
+      python-mypy ""
+      :command ("mypy"
+                "--ignore-missing-imports"
+                "--python-version" "3.6"
+                source-original)
+      :error-patterns
+      ((error line-start (file-name) ":" line ": error:" (message) line-end))
+      :modes python-mode)
+
+  (add-to-list 'flycheck-checkers 'python-mypy t)
+  (flycheck-add-next-checker 'python-flake8 'python-mypy t)
 )
 
 
@@ -317,12 +331,29 @@
 
 (use-package magit
   :ensure t
-  :bind (("C-x g" . magit-status)))
+  :bind (("C-x g" . magit-))
+  :config
+  (add-hook
+   'magit-mode-hook
+   (lambda ()
+     (local-set-key (kbd "=") 'magit-diff-visit-file-other-window)))
+  )
 
 (use-package yasnippet-snippets
   :ensure t
   :config
   (yas-global-mode))
+
+(use-package typescript-mode
+  :ensure t
+  :config
+  (add-hook
+    'typescript-mode-hook
+    (lambda ()
+      (setq typescript-indent-level 2)
+    )
+  )
+)
 
 ;;; init.el ends here
 

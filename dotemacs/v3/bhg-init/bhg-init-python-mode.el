@@ -44,7 +44,8 @@
   :ensure t
   :demand t
   :after python
-  :bind ("C-c y b" . python-black-buffer)
+  :bind (("C-c y b" . python-black-buffer)
+         ("C-c y m" . python-black-region))  ;; requires `pip install black-machiatto` to work
   )
 
 (use-package py-isort
