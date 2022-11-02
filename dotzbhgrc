@@ -1,0 +1,93 @@
+alias cdiff='cdiff -s -w 0'
+alias emc='emacsclient -nw'
+#zsh tweaks
+# force emacs keymap
+bindkey -e
+# allow hash comments on the command line
+setopt INTERACTIVE_COMMENTS
+# M-Backspace deletes one filepath element at a time instead of the whole path
+# stolen from https://unix.stackexchange.com/questions/258656/how-can-i-delete-to-a-slash-or-a-word-in-zsh
+autoload -U select-word-style
+select-word-style bash
+
+# aws tools specific
+alias brazil-octane='/apollo/env/OctaneBrazilTools/bin/brazil-octane'
+
+# first install pip via their curl based installed using --user, then make sure it's in PATH
+PYTHON_USER_BIN="$(python -c 'import site; print(site.USER_BASE)')/bin"
+export PATH=$PYTHON_USER_BIN:$PATH
+
+# beforehand install pyenv via their curl based installer
+PYENV_BIN_DIR=~/.pyenv/bin
+export PATH=$PYENV_BIN_DIR:$PATH
+# eval "$(pyenv init -)"
+
+# prevent python to generate __pycache__ directories with bytecode
+# this can lead to the infamous FileNotFoundError
+# ...pytest_html/resources/style.css that is due to bytecode being
+# reused among different brazil ws (since they're generated in
+# brazil-package-cache cache_root which is reused among brazil
+# workspaces)
+export PYTHONDONTWRITEBYTECODE=1
+
+
+# zsh version of bash's persistent history
+setopt append_history # append rather then overwrite
+setopt extended_history # save timestamp
+setopt inc_append_history # add history immediately after typing a command
+
+
+ZSH_HISTORY_FILE=~/.history
+
+_get_line_num_last () {
+  local attempts=0
+  local line=0
+  while true; do
+    # Greps the last two lines that can be considered history records
+    local lines="$(grep -anE '^: [0-9]{10}:[0-9]*?;' ${ZSH_HISTORY_FILE} | \
+                 tail -n $((2 + attempts)) | head -2)"
+    local previous_line="$(echo "$lines" | head -1)"
+    # Gets the line number of the line being tested
+    local line_attempt=$(echo "$lines" | tail -1 | cut -d':' -f1 | tr -d '\n')
+    # If the previous (possible) history records ends with `\`, then the
+    # _current_ one is part of a multiline command; try again.
+    # Probably. Unless it was in turn in the middle of a multi-line
+    # command. And that's why the last line should be saved.
+    if [[ $line_attempt -ne $HISTORY_LAST_LINE ]] && \
+       [[ $previous_line == *"\\" ]] && [[ $attempts -eq 0 ]];
+    then
+      ((attempts+=1))
+    else
+      line=$line_attempt
+      break
+    fi
+  done
+  echo "$line"
+}
+
+precmd() {
+  local line_num_last="$(_get_line_num_last)"
+  local date_part="$(gawk "NR == $line_num_last {print;}" ${ZSH_HISTORY_FILE} | cut -c 3-12)"
+  local fmt_date="$(date -d @${date_part} +'%Y-%m-%d %H:%M:%S')"
+  # I use awk itself to split the _first_ line only at the first `;`
+  local command_part="$(gawk "
+    NR == $line_num_last {
+      pivot = match(\$0, \";\");
+      print substr(\$0, pivot+1);
+    }
+    NR > $line_num_last {
+      print;
+    }" ${ZSH_HISTORY_FILE})"
+  if [ "$command_part" != "$PERSISTENT_HISTORY_LAST" ]
+  then
+    echo "${fmt_date} | ${command_part}" >> ~/.persistent_history
+    export PERSISTENT_HISTORY_LAST="$command_part"
+    export HISTORY_LAST_LINE=$((1 + $(wc -l < ${ZSH_HISTORY_FILE})))
+  fi
+}
+
+
+# enable edit current command line
+autoload -z edit-command-line
+zle -N edit-command-line
+bindkey "^X^E" edit-command-line

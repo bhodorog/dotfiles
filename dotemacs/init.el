@@ -280,32 +280,51 @@
   :bind (("C-c i" . imenu-anywhere)
          ("s-i" . imenu-anywhere)))
 
-(use-package flycheck-pycheckers
-  :ensure t
-  :config
-  (setq flycheck-pycheckers-checkers (quote (flake8 pylint))))
+;; (use-package flycheck-pycheckers
+;;   :ensure t
+;;   :config
+;;   (setq flycheck-pycheckers-max-line-length 120)
+;;   (setq flycheck-pycheckers-checkers (quote (flake8 mypy)))
+;; )
 
 (use-package flycheck
   :ensure t
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode)
-  (setq flycheck-highlighting-mode 'lines))
+  (setq flycheck-flake8-maximum-line-length 120)
+  (setq flycheck-highlighting-mode 'lines)
+
+  (flycheck-define-checker
+      python-mypy ""
+      :command ("mypy"
+                "--ignore-missing-imports"
+                "--python-version" "3.6"
+                source-original)
+      :error-patterns
+      ((error line-start (file-name) ":" line ": error:" (message) line-end))
+      :modes python-mode)
+
+  (add-to-list 'flycheck-checkers 'python-mypy t)
+  (flycheck-add-next-checker 'python-flake8 'python-mypy t)
+)
 
 
-;; flycheck's main feature is the ability to run all the checkers at
+;; flycheck-pycheckers's main feature is the ability to run all the checkers at
 ;; the same time vs sequentially or chained as flycheck
 ;; we use no-require since the hook needs to be added
 ;; (with-eval-after-load 'flycheck ...)
-(use-package flycheck
-  :no-require t
-  :config
-  (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup))
-
-
-;; (use-package window-number
-;;   :ensure t
+;; (use-package flycheck
+;;   :no-require t
 ;;   :config
-;;   (window-number-mode 1))
+;;   (add-hook 'flycheck-mode-hook #'flycheck-pycheckers-setup)
+;; )
+
+
+(use-package window-numbering
+  :ensure t
+  ;; :config
+  ;; (window-number-mode 1)
+)
 
 
 ;; other-window replacement for quicker switch when >2
@@ -366,6 +385,29 @@
   ;; (add-hook 'python-mode-hook 'jedi:ac-setup)
   )
 
+;; python's black auto-formatter
+(use-package python-black
+  :demand t
+  :after python
+  :init
+  (setq python-black-extra-args '("--line-length=120")))
+
+;; python's isort support
+(use-package py-isort
+  :ensure t
+  :init
+  (setq py-isort-options '("--line-width 120")))
+
+
+;; Let's give elpy a try, in a quest for good python code explorer
+;; a bit to much for now, the only really useful stuff were the regexes when
+;; C-o. Let's keep it around for a bit, but disabled.
+(use-package elpy
+  :ensure t
+  )
+;;  :init
+;;  (elpy-enable))
+;;
 ;; (use-package auto-complete
 ;;   :ensure t
 ;;   :config
@@ -404,9 +446,12 @@
    (which-function-mode 1)
    (outline-minor-mode t)
    (setq coding-system-for-write 'utf-8)
-   (setq fill-column 79)
+   (setq fill-column 120)
    ;; (fci-mode)
+   ;; (python-black-on-save-mode 1)
+   ;; (add-hook 'before-save-hook 'py-isort-before-save)
    ))
 
 
 ;;; init.el ends here
+(put 'set-goal-column 'disabled nil)

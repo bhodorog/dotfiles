@@ -50,11 +50,25 @@
    (electric-pair-mode t)
    ;; (yas/minor-mode-on)
    (which-function-mode 1)
+   (local-set-key (kbd "C-c y w") 'which-function)
    (outline-minor-mode t)
    (setq coding-system-for-write 'utf-8)
    (setq fill-column 79)
    ;; (fci-mode)
    ))
 
+;; python's black auto-formatter
+(use-package python-black
+  :demand t
+  :after python
+  :bind (("C-c y b" . python-black-buffer)
+         ("C-c y m" . python-black-region))  ;; requires `pip install black-machiatto` to work
+)
+
+;; python's isort support
+(use-package py-isort
+  :ensure t
+  :bind ("C-c y s" . py-isort-buffer)
+)
 
 (provide 'bhg-init-python-mode)

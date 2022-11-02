@@ -118,6 +118,7 @@
 (defvaralias 'c-basic-offset 'tab-width)        ;; Override the default
 (defvaralias 'cperl-indent-level 'tab-width)    ;; Override the default
 (visual-line-mode t)
+(setq split-width-threshold 240)
 
 
 ;; enable narrow-to commands by default
@@ -188,7 +189,13 @@
   :config
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   (projectile-global-mode +1)
-  (add-to-list 'projectile-globally-ignored-file-suffixes "pyc"))
+  (add-to-list 'projectile-globally-ignored-file-suffixes "pyc")
+  ;; when projectile-indexing-method is "alien" and git is detected as
+  ;; vcs for the project git is used to detect the project files,
+  ;; which basically uses .gitignore content:
+  ;; git ls-files -zco --exclude-standard
+  (add-to-list 'projectile-globally-ignored-directories ".mypy_cache")
+)
 
 ;; requires exernal  markdown processor: e.g. kramdown
 (use-package markdown-mode
@@ -260,6 +267,20 @@
   (add-hook 'after-init-hook #'global-flycheck-mode)
   (setq flycheck-highlighting-mode 'lines)
   (setq flycheck-disable-checkers '(python-pylint))
+  (setq flycheck-flake8-maximum-line-length 120)
+
+  (flycheck-define-checker
+      python-mypy ""
+      :command ("mypy"
+                "--ignore-missing-imports"
+                "--python-version" "3.6"
+                source-original)
+      :error-patterns
+      ((error line-start (file-name) ":" line ": error:" (message) line-end))
+      :modes python-mode)
+
+  (add-to-list 'flycheck-checkers 'python-mypy t)
+  (flycheck-add-next-checker 'python-flake8 'python-mypy t)
 )
 
 

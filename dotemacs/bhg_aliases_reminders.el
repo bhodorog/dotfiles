@@ -62,3 +62,9 @@
 ;; ivy
 ;; use the typed text and don't auto-complete to the nearest candidate
 ;; C-M-j
+;; toggle between verbatim regexp search or ivy-preferred-re-builders list
+;; M-r (e.g. while swiper is running)
+
+
+;; change default indent-leve for JavaScipt mode (json files)
+;; C-h v js-indent-level -> customize
