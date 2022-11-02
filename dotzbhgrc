@@ -1,17 +1,18 @@
 alias cdiff='cdiff -s -w 0'
 alias emc='emacsclient -nw'
+
 #zsh tweaks
-# force emacs keymap
+
+## force emacs keymap
 bindkey -e
-# allow hash comments on the command line
+
+## allow hash comments on the command line
 setopt INTERACTIVE_COMMENTS
-# M-Backspace deletes one filepath element at a time instead of the whole path
-# stolen from https://unix.stackexchange.com/questions/258656/how-can-i-delete-to-a-slash-or-a-word-in-zsh
+
+## M-Backspace deletes one filepath element at a time instead of the whole path
+## stolen from https://unix.stackexchange.com/questions/258656/how-can-i-delete-to-a-slash-or-a-word-in-zsh
 autoload -U select-word-style
 select-word-style bash
-
-# aws tools specific
-alias brazil-octane='/apollo/env/OctaneBrazilTools/bin/brazil-octane'
 
 # first install pip via their curl based installed using --user, then make sure it's in PATH
 PYTHON_USER_BIN="$(python -c 'import site; print(site.USER_BASE)')/bin"
@@ -20,7 +21,7 @@ export PATH=$PYTHON_USER_BIN:$PATH
 # beforehand install pyenv via their curl based installer
 PYENV_BIN_DIR=~/.pyenv/bin
 export PATH=$PYENV_BIN_DIR:$PATH
-# eval "$(pyenv init -)"
+ eval "$(pyenv init --path)"
 
 # prevent python to generate __pycache__ directories with bytecode
 # this can lead to the infamous FileNotFoundError
@@ -46,9 +47,9 @@ _get_line_num_last () {
     # Greps the last two lines that can be considered history records
     local lines="$(grep -anE '^: [0-9]{10}:[0-9]*?;' ${ZSH_HISTORY_FILE} | \
                  tail -n $((2 + attempts)) | head -2)"
-    local previous_line="$(echo "$lines" | head -1)"
+    local previous_line="$(echo -E "$lines" | head -1)"
     # Gets the line number of the line being tested
-    local line_attempt=$(echo "$lines" | tail -1 | cut -d':' -f1 | tr -d '\n')
+    local line_attempt=$(echo -E "$lines" | tail -1 | cut -d':' -f1 | tr -d '\n')
     # If the previous (possible) history records ends with `\`, then the
     # _current_ one is part of a multiline command; try again.
     # Probably. Unless it was in turn in the middle of a multi-line
@@ -62,7 +63,7 @@ _get_line_num_last () {
       break
     fi
   done
-  echo "$line"
+  echo -E "$line"
 }
 
 precmd() {
@@ -80,7 +81,7 @@ precmd() {
     }" ${ZSH_HISTORY_FILE})"
   if [ "$command_part" != "$PERSISTENT_HISTORY_LAST" ]
   then
-    echo "${fmt_date} | ${command_part}" >> ~/.persistent_history
+    echo -E "${fmt_date} | ${command_part}" >> ~/.persistent_history
     export PERSISTENT_HISTORY_LAST="$command_part"
     export HISTORY_LAST_LINE=$((1 + $(wc -l < ${ZSH_HISTORY_FILE})))
   fi

@@ -72,3 +72,7 @@
 
 ;; change default indent-level for JavaScipt mode (json files)
 ;; C-h v js-indent-level -> customize
+
+
+;; markdown helpers
+;; TAB to cycle between show/hide levels

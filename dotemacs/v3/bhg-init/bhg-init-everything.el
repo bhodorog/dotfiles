@@ -197,7 +197,7 @@
 (use-package markdown-mode
   :ensure t
   :init
-  (setq markdown-command "kramdown"))
+  (setq markdown-command "markdown2"))
 
 
 (use-package expand-region
@@ -269,7 +269,7 @@
       python-mypy ""
       :command ("mypy"
                 "--ignore-missing-imports"
-                "--python-version" "3.6"
+                ;; "--python-version" "3.6"
                 source-original)
       :error-patterns
       ((error line-start (file-name) ":" line ": error:" (message) line-end))
