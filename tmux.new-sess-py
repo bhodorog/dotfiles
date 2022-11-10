@@ -1,0 +1,22 @@
+# Requirements
+
+TMUX_SESSION_NAME=${1:-undefined}
+PRJ_DIR=${2:-$HOME/w/brazil-ws/}
+
+if [[ $TMUX_SESSION_NAME =~ "--help" || $TMUX_SESSION_NAME == "-h" ]]; then
+    echo "tmux.new-sess-py [tmux-session-name] [working-dir]"
+    exit 1
+fi
+
+# Having a virtualenv activated when starting a new tmux session leads
+# to corrupted $PATH (with duplicated entries)
+# if [[ ${VIRTUAL_ENV-undefined} == "undefined" ]]; then
+#     deactivate()
+# fi
+tmux has-session -t $TMUX_SESSION_NAME && echo "A tmux session named "$TMUX_SESSION_NAME" already exists => exiting..." && exit || tmux new-session -s $TMUX_SESSION_NAME -d -n emacs -c $PRJ_DIR
+tmux send-keys 'eval "$(pyenv init -)" && eval "$(pyenv virtualenv-init -)" && pyenv activate emacs-396' C-m
+tmux send-keys "emacs --daemon=${TMUX_SESSION_NAME}" C-m
+tmux send-keys "emacsclient -s ${TMUX_SESSION_NAME} -nw" C-m
+tmux new-window -t $TMUX_SESSION_NAME:1 -n dev -c $PRJ_DIR
+tmux new-window -t $TMUX_SESSION_NAME:2 -n git -c $PRJ_DIR
+tmux attach -t $TMUX_SESSION_NAME
