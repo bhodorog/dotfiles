@@ -29,7 +29,14 @@ set-option -g status-keys emacs
 # use emacs/readline bindings for tmux's copy mode
 set-window-option -g mode-keys emacs
 
+# merge panes vertically or horizontally
 bind-key S choose-window "join-pane -v -s "%%""
 bind-key V choose-window "join-pane -h -s "%%""
 
+# exposing the ssh-agent's unix socket within tmux
 set-environment -g 'SSH_AUTH_SOCK' ~/.ssh/ssh_auth_sock
+
+# linux/ubuntu specific, xclip required
+set -g mouse on
+# specific to emacs copy mode, for vi use s/copy-mode/copy-mode-vi/ below
+bind-key -T copy-mode MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "xclip -selection primary -filter | xclip -selection clipboard"

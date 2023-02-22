@@ -252,17 +252,14 @@
   :bind (("C-c i" . imenu-anywhere)
          ("s-i" . imenu-anywhere)))
 
-;; (use-package flycheck-pycheckers
-;;   :ensure t
-;;   :config
-;;   (setq flycheck-pycheckers-checkers (quote (flake8 pylint))))
-
 (use-package flycheck
   :ensure t
+  ;; :custom
+  ;; (flycheck-disabled-checkers '(python-pylint))
+
   :config
   (add-hook 'after-init-hook #'global-flycheck-mode)
   (setq flycheck-highlighting-mode 'lines)
-  (setq flycheck-disable-checkers '(python-pylint))
   (setq flycheck-flake8-maximum-line-length 120)
 
   (flycheck-define-checker
@@ -355,6 +352,18 @@
   )
 )
 
-;;; init.el ends here
+(use-package dockerfile-mode
+  :ensure t
+)
+
+(use-package groovy-mode
+  :ensure t
+)
+
+(use-package toml-mode
+  :ensure t
+)
+
 
 (provide 'bhg-init-everything)
+;;; bhg-init-everything.el ends here
