@@ -3,19 +3,19 @@
 
 (use-package flycheck
   :config
-  (setq flycheck-flake8-maximum-line-length 120)
+  (setq flycheck-flake8-maximum-line-length 100)
   (setq flycheck-highlighting-mode 'lines)
   )
 
 
 (use-package python-black
   :init
-  (setq python-black-extra-args '("--line-length=120")))
+  (setq python-black-extra-args '("--line-length=100")))
 
 
 (use-package py-isort
   :init
-  (setq py-isort-options '("--line-width=120")))
+  (setq py-isort-options '("--line-width=100")))
 
 
 ;; Let's have elpy around, for elpy-occur if not for anything else)

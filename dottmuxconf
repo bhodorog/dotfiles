@@ -38,5 +38,6 @@ set-environment -g 'SSH_AUTH_SOCK' ~/.ssh/ssh_auth_sock
 
 # linux/ubuntu specific, xclip required
 set -g mouse on
+
 # specific to emacs copy mode, for vi use s/copy-mode/copy-mode-vi/ below
-bind-key -T copy-mode MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "xclip -selection primary -filter | xclip -selection clipboard"
+# bind-key -T copy-mode MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "xclip -selection primary -filter | xclip -selection clipboard"

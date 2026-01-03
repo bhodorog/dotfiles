@@ -7,6 +7,9 @@ alias ackl='ack --pager "less -R"'
 alias vi=vim
 alias emc='emacsclient -nw'
 alias fphr='cat ~/.persistent_history | fzf --tac +s'
+# Ubuntu, require apt install xclip
+alias pbcopy='xclip -selection clipboard'
+alias pbpaste='xclip -selection clipboard -o'
 alias fph='cat ~/.persistent_history | fzf --tac +s --bind="alt-p:toggle-preview" --preview-window="down:wrap" --preview="echo {}" | sed "s/^[^|]*| //" | pbcopy'
 alias tstmp='date +%y%m%d%H%M%S'
 alias cdiffs='cdiff -s -w 0'

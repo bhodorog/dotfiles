@@ -23,6 +23,8 @@
     (python-mode . lsp-deferred)
     ;; if you want which-key integration
     (lsp-mode . lsp-enable-which-key-integration)
+    (c-mode . lsp-deferred)
+    (c++-mode . lsp-deferred)
   )
   :commands lsp-deferred)
 
