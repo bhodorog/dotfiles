@@ -10,6 +10,9 @@ alias fphr='cat ~/.persistent_history | fzf --tac +s'
 alias fph='cat ~/.persistent_history | fzf --tac +s --bind="alt-p:toggle-preview" --preview-window="down:wrap" --preview="echo {}" | sed "s/^[^|]*| //" | pbcopy'
 alias tstmp='date +%y%m%d%H%M%S'
 alias cdiffs='cdiff -s -w 0'
+alias k=kubectl
+alias ku=kubectl
+alias wa='watch '
 
 export FZF_DEFAULT_OPTS='--bind="alt-p:toggle-preview" --preview-window="down:wrap" --preview="echo {}"'
 
@@ -79,6 +82,7 @@ PROMPT_COMMAND='log_bash_persistent_history'
 which brew &>/dev/null && BREW_PREFIX=$(brew --prefix)
 which brew &>/dev/null && GIT_BREW_PREFIX=$(brew --prefix git)
 which brew &>/dev/null && BASH_COMPLETION_2_BREW_PREFIX=$(brew --prefix bash-completion@2)
+which brew &>/dev/null && KUBE_PS1_BREW_PREFIX=$(brew --prefix kube-ps1)
 
 # use existing homebrew v1 completions
 # IMPORTANT: the following will work only for bash versions > 4 (echo $BASH_VERSION)
@@ -91,6 +95,9 @@ export BASH_COMPLETION_COMPAT_DIR="/usr/local/etc/bash_completion.d"
 # the next line shouldn't be needed due to setting BASH_COMPLETION_COMPAT_DIR above.
 # [[ -n $GIT_BREW_PREFIX ]] && _bhg_source_if_exists $GIT_BREW_PREFIX/etc/bash_completion.d/git-prompt.sh
 # [[ -n $GIT_BREW_PREFIX ]] && _bhg_source_if_exists $GIT_BREW_PREFIX/etc/bash_completion.d/git-completion.bash
+
+# requires brew install kube-ps1
+[[ -n $KUBE_PS1_BREW_PREFIX ]] && _bhg_source_if_exists $KUBE_PS1_BREW_PREFIX/share/kube-ps1.sh
 
 # customize PS1
 function _bhg_color_ps1 {

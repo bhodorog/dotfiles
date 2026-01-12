@@ -1,3 +1,11 @@
+(use-package python
+  :hook (python-mode . (lambda ()
+           (electric-pair-mode t)
+           (which-function-mode 1)
+           (outline-minor-mode 1)
+           (setq coding-system-for-write 'utf-8)
+           (setq fill-column 100))))
+
 (use-package python-black
   :ensure t
   :demand t
@@ -24,7 +32,13 @@
     ;; if you want which-key integration
     (lsp-mode . lsp-enable-which-key-integration)
   )
-  :commands lsp-deferred)
+  :commands (lsp lsp-deferred))
+
+(use-package lsp-pyright
+  :ensure t
+  :hook (python-mode . (lambda ()
+                          (require 'lsp-pyright)
+                          (lsp-deferred))))  ; or lsp
 
 ;; ;;optionally
 (use-package lsp-ui
@@ -44,10 +58,5 @@
   :commands lsp-treemacs-errors-list)
 
 
-;; optional if you want which-key integration
-(use-package which-key
-  :ensure t
-  :config (which-key-mode) )
-
-
 (provide 'bhg-init-lsp-python-mode)
+;;; bhg-init-lsp-python-mode.el ends here

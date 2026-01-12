@@ -197,7 +197,9 @@
 (use-package markdown-mode
   :ensure t
   :init
-  (setq markdown-command "markdown2"))
+  (setq markdown-command "markdown2")
+  :hook
+  (markdown-mode . outline-minor-mode))
 
 
 (use-package expand-region
@@ -332,6 +334,12 @@
 (use-package toml-mode
   :ensure t
 )
+
+;; which-key integration is a more convenient alternative to C-h ?
+;; shortcut to explore shortcuts available for certain modes
+(use-package which-key
+  :ensure t
+  :config (which-key-mode) )
 
 
 (provide 'bhg-init-everything)

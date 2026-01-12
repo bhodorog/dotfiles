@@ -15,9 +15,9 @@
     in = @{u}..
 
 [core]
-	excludesfile = /Users/bogdan.hodorog/.gitignore_global
     pager=less -FMRiX
 	editor = vim
+	excludesFile = ~/.gitignore
 [user]
 	email = bogdan.hodorog@gmail.com
 	name = Bogdan Hodorog

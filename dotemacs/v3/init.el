@@ -7,3 +7,4 @@
 ;; (require 'bhg-init-python-mode)
 (require 'bhg-init-lsp-python-mode)
 (require 'bhg-init-cdesk)
+(put 'upcase-region 'disabled nil)

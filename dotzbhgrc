@@ -1,5 +1,11 @@
-alias cdiff='cdiff -s -w 0'
 alias emc='emacsclient -nw'
+alias fphr='cat ~/.persistent_history | fzf --tac +s'
+alias fph='cat ~/.persistent_history | fzf --tac +s --bind="alt-p:toggle-preview" --preview-window="down:wrap" --preview="echo {}" | sed "s/^[^|]*| //" | pbcopy'
+alias cdiffs='cdiff -s -w 0'
+alias k=kubectl
+alias ku=kubectl
+alias wa='watch '
+alias ll='gls --color -h --group-directories-first'
 
 #zsh tweaks
 
@@ -15,13 +21,13 @@ autoload -U select-word-style
 select-word-style bash
 
 # first install pip via their curl based installed using --user, then make sure it's in PATH
-PYTHON_USER_BIN="$(python -c 'import site; print(site.USER_BASE)')/bin"
-export PATH=$PYTHON_USER_BIN:$PATH
+# PYTHON_USER_BIN="$(python -c 'import site; print(site.USER_BASE)')/bin"
+# export PATH=$PYTHON_USER_BIN:$PATH
 
 # beforehand install pyenv via their curl based installer
 PYENV_BIN_DIR=~/.pyenv/bin
 export PATH=$PYENV_BIN_DIR:$PATH
- eval "$(pyenv init --path)"
+eval "$(pyenv init -)"
 
 # prevent python to generate __pycache__ directories with bytecode
 # this can lead to the infamous FileNotFoundError
@@ -38,7 +44,7 @@ setopt extended_history # save timestamp
 setopt inc_append_history # add history immediately after typing a command
 
 
-ZSH_HISTORY_FILE=~/.history
+ZSH_HISTORY_FILE=~/.zsh_history
 
 _get_line_num_last () {
   local attempts=0
@@ -66,10 +72,17 @@ _get_line_num_last () {
   echo -E "$line"
 }
 
+
+# customize PS1
+autoload -Uz vcs_info
+setopt prompt_subst
+
+
 precmd() {
+  # global persistent history file
   local line_num_last="$(_get_line_num_last)"
   local date_part="$(gawk "NR == $line_num_last {print;}" ${ZSH_HISTORY_FILE} | cut -c 3-12)"
-  local fmt_date="$(date -d @${date_part} +'%Y-%m-%d %H:%M:%S')"
+  local fmt_date="$(gdate -d @${date_part} +'%Y-%m-%d %H:%M:%S')"
   # I use awk itself to split the _first_ line only at the first `;`
   local command_part="$(gawk "
     NR == $line_num_last {
@@ -85,8 +98,18 @@ precmd() {
     export PERSISTENT_HISTORY_LAST="$command_part"
     export HISTORY_LAST_LINE=$((1 + $(wc -l < ${ZSH_HISTORY_FILE})))
   fi
+
+  # customnize PS1
+  vcs_info
 }
 
+# load kube-ps1
+source $(brew --prefix kube-ps1)/share/kube-ps1.sh
+
+# customize PS1
+# PS1='%n@%m %F{red}%/%f${vcs_info_msg_0_} $ '
+PROMPT='%n@%m %F{magenta}${PWD/#$HOME/~} %F{green}${vcs_info_msg_0_}$(kube_ps1)
+%F{cyan}$%F{reset_color} '
 
 # enable edit current command line
 autoload -z edit-command-line
