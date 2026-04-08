@@ -24,10 +24,14 @@ select-word-style bash
 # PYTHON_USER_BIN="$(python -c 'import site; print(site.USER_BASE)')/bin"
 # export PATH=$PYTHON_USER_BIN:$PATH
 
+# PYENV or UV
 # beforehand install pyenv via their curl based installer
-PYENV_BIN_DIR=~/.pyenv/bin
-export PATH=$PYENV_BIN_DIR:$PATH
-eval "$(pyenv init -)"
+# PYENV_BIN_DIR=~/.pyenv/bin
+# export PATH=$PYENV_BIN_DIR:$PATH
+# eval "$(pyenv init -)"
+
+# beforehand install uv via their curl based installer
+[[ -f $HOME/.local/bin/env ]] && source $HOME/.local/bin/env
 
 # prevent python to generate __pycache__ directories with bytecode
 # this can lead to the infamous FileNotFoundError
@@ -37,6 +41,25 @@ eval "$(pyenv init -)"
 # workspaces)
 export PYTHONDONTWRITEBYTECODE=1
 
+
+# handy function to run git commands on multiple repos in the current dir
+git_foreach() {
+  local cols=${COLUMNS:-80}
+  local line=${(l:cols::=:)""}
+
+  for d in */.git; do
+    local r=${d:h}
+    local b
+
+    b=$(git -C "$r" symbolic-ref --short HEAD 2>/dev/null || git -C "$r" rev-parse --short HEAD)
+
+    print -P -- "%F{cyan}${line}%f"
+    print -P -- "%F{cyan} $r @ $b %f"
+
+    git -C "$r" "$@"
+    print
+  done
+}
 
 # zsh version of bash's persistent history
 setopt append_history # append rather then overwrite
@@ -73,9 +96,11 @@ _get_line_num_last () {
 }
 
 
-# customize PS1
+# customize prompt
 autoload -Uz vcs_info
 setopt prompt_subst
+zstyle ':vcs_info:git:*' formats ' %F{green}(%b)%f'
+zstyle ':vcs_info:*' enable git
 
 
 precmd() {
@@ -99,17 +124,12 @@ precmd() {
     export HISTORY_LAST_LINE=$((1 + $(wc -l < ${ZSH_HISTORY_FILE})))
   fi
 
-  # customnize PS1
+  # refresh vcs_info for prompt
   vcs_info
 }
 
 # load kube-ps1
-source $(brew --prefix kube-ps1)/share/kube-ps1.sh
-
-# customize PS1
-# PS1='%n@%m %F{red}%/%f${vcs_info_msg_0_} $ '
-PROMPT='%n@%m %F{magenta}${PWD/#$HOME/~} %F{green}${vcs_info_msg_0_}$(kube_ps1)
-%F{cyan}$%F{reset_color} '
+## source $(brew --prefix kube-ps1)/share/kube-ps1.sh
 
 # enable edit current command line
 autoload -z edit-command-line
@@ -118,3 +138,12 @@ bindkey "^X^E" edit-command-line
 
 # force preview for fzf (including bash history search - C-r)
 export FZF_DEFAULT_OPTS='--bind="alt-p:toggle-preview" --preview-window="down:wrap" --preview="echo {}"'
+
+# disable zsh path caching
+unsetopt HASH_CMDS
+setopt NO_HASH_CMDS
+
+# main prompt (set last so it is not overwritten)
+
+#PROMPT='%n@%m %F{red}%/%f${vcs_info_msg_0_} $ '
+PROMPT='%F{red}%3~/%f${vcs_info_msg_0_} $ '

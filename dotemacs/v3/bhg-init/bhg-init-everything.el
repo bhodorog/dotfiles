@@ -126,6 +126,21 @@
 (put 'narrow-to-defun  'disabled nil)
 (put 'narrow-to-page   'disabled nil)
 
+;; Always prefer vertical splits (side-by-side)
+(setq split-height-threshold nil)
+(setq split-width-threshold 0)
+
+;; Never allow more than 2 windows
+(defun my/no-more-than-two-windows (orig-fun &rest args)
+  (if (>= (count-windows) 2)
+      ;; If already 2 windows, reuse instead of splitting
+      (let ((split-width-threshold nil)
+            (split-height-threshold nil))
+        (apply orig-fun args))
+    (apply orig-fun args)))
+
+(advice-add 'split-window-sensibly :around #'my/no-more-than-two-windows)
+
 (require 'use-package)
 (setq use-package-verbose t)
 
@@ -182,22 +197,62 @@
 (use-package ivy-hydra
   :ensure t)
 
+
 (use-package projectile
   :ensure t
   :init
   (setq projectile-completion-system 'ivy)
   :config
-  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-  (projectile-global-mode +1)
   (add-to-list 'projectile-globally-ignored-file-suffixes "pyc")
   (add-to-list 'projectile-globally-ignored-directories ".mypy_cache")
-  )
+  (add-to-list 'projectile-globally-ignored-directories ".venv")
+  (add-to-list 'projectile-globally-ignored-directories ".pytest_cache")
 
-;; requires exernal  markdown processor: e.g. kramdown
+  ;; customizes projectile to show a project name in C-c-p-f as dir1/dir2/repo => dir1/repo
+  (setq projectile-project-name-function
+        (lambda (project-root)
+          (let* ((child (file-name-nondirectory
+                         (directory-file-name project-root)))
+                 (parent-dir (file-name-directory
+                              (directory-file-name project-root)))
+                 (superparent-dir (file-name-directory
+                                   (directory-file-name parent-dir)))
+                 (superparent (file-name-nondirectory
+                               (directory-file-name superparent-dir))))
+            (format "%s/%s" superparent child))))
+
+  (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+  (projectile-global-mode +1))
+
+
+;; requires exernal  markdown processor: e.g. brew install pandoc
+;; for pretty print it needs curl -o dotemacs/v3/bhg-init/github-markdown.css https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css
+;; (use-package markdown-mode
+;;   :ensure t
+;;   :init
+;;   ;; try following for offline
+;;   ;; (setq markdown-command "pandoc -f gfm -t html5 --standalone --self-contained --css=bhg-init/github-markdown.min.css")
+;;   (setq markdown-command
+;;         (concat
+;;          "pandoc -f gfm -t html5 --standalone "
+;;          "--template=" (expand-file-name "~/.emacs.d/pandoc-github-template.html") " "
+;;          "--css=https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css "
+;;          "--syntax-highlight=tango "
+;;          "-V body-class=markdown-body"))
+;;   :hook
+;;   (markdown-mode . outline-minor-mode))
+
+
 (use-package markdown-mode
   :ensure t
   :init
-  (setq markdown-command "markdown2")
+  (setq markdown-command
+        (concat
+         "pandoc -f gfm -t html5 --standalone "
+         "--template=" (expand-file-name "~/.emacs.d/pandoc-github-template.html") " "
+         "--css=https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css "
+         "--syntax-highlighting=tango "
+         "--lua-filter=" (expand-file-name "~/.emacs.d/pandoc-title.lua")))
   :hook
   (markdown-mode . outline-minor-mode))
 

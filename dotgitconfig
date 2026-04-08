@@ -1,3 +1,6 @@
+[user]
+	email = bogdan.hodorog@gmail.com
+	name = Bogdan Hodorog
 [alias]
     gr = log --graph --full-history --color --pretty=tformat:"%x1b[31m%h%x09%x1b[32m%d%x1b[33m{%an}%x1b[0m%x20%s%x20%x1b[0m%x20%x1b[34m[%cr%x20%x1b[36m%cd]"
     dag = log --graph --format='format:%C(yellow)%h%C(reset) %C(blue)"%an" <%ae>%C(reset) %C(magenta)%cr%C(reset)%C(auto)%d%C(reset)%n%s' --date-order
@@ -18,9 +21,6 @@
     pager=less -FMRiX
 	editor = vim
 	excludesFile = ~/.gitignore
-[user]
-	email = bogdan.hodorog@gmail.com
-	name = Bogdan Hodorog
 [color]
     ui = auto
 [log]

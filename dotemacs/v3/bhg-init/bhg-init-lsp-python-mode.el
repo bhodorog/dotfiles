@@ -28,11 +28,20 @@
   (setq lsp-keymap-prefix "C-c l")
   :hook (
     ;; replace XXX-mode with concrete major-mode(e. g. python-mode)
-    (python-mode . lsp-deferred)
+    ;; (python-mode . lsp-deferred)  # already done in lsp-pyright
     ;; if you want which-key integration
     (lsp-mode . lsp-enable-which-key-integration)
   )
-  :commands (lsp lsp-deferred))
+  :commands (lsp lsp-deferred)
+  :config
+  ;; ---- performance: ignore venvs in file watching ----
+  (dolist (dir '("[/\\\\]\\.venv"
+                 "[/\\\\]\\.venv.*"
+                 "[/\\\\]venv"
+                 "[/\\\\]__pycache__"
+                 "[/\\\\]\\.mypy_cache"))
+    (add-to-list 'lsp-file-watch-ignored-directories dir))
+)
 
 (use-package lsp-pyright
   :ensure t

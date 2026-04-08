@@ -8,6 +8,7 @@ echo $REPO_DIR
 
 cd
 ln -s $REPO_DIR/dotbhgrc .bhgrc
+ln -s $REPO_DIR/dotzbhgrc .zbhgrc
 ln -s $REPO_DIR/dotgitconfig .gitconfig
 # install emacs stuff
 #ln -s $REPO_DIR/dotemacs/dotemacs .emacs
