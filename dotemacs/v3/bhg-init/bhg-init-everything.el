@@ -141,6 +141,28 @@
 
 (advice-add 'split-window-sensibly :around #'my/no-more-than-two-windows)
 
+;; Helper for pointing Claude CLI to a snippet of code
+(defun copy-code-with-reference ()
+  "Copy file path and line numbers to tmux buffer."
+  (interactive)
+  (if (use-region-p)
+      (let* ((start (region-beginning))
+             (end (region-end))
+             (start-line (line-number-at-pos start))
+             (end-line (line-number-at-pos end))
+             (file-path (buffer-file-name))
+             (reference (format "%s:%d-%d" file-path start-line end-line)))
+        ;; Copy to tmux clipboard only
+        (when (executable-find "tmux")
+          (with-temp-buffer
+            (insert reference)
+            (shell-command-on-region (point-min) (point-max) "tmux load-buffer -")))
+        (message "Copied to tmux buffer: %s:%d-%d"
+                 (file-name-nondirectory file-path) start-line end-line))
+    (message "No region selected")))
+
+(global-set-key (kbd "C-c y c") 'copy-code-with-reference)
+
 (require 'use-package)
 (setq use-package-verbose t)
 
@@ -249,10 +271,10 @@
   (setq markdown-command
         (concat
          "pandoc -f gfm -t html5 --standalone "
-         "--template=" (expand-file-name "~/.emacs.d/pandoc-github-template.html") " "
+         "--template=" (expand-file-name "~/.emacs.d/bhg-init/pandoc-github-template.html") " "
          "--css=https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.2.0/github-markdown.min.css "
          "--syntax-highlighting=tango "
-         "--lua-filter=" (expand-file-name "~/.emacs.d/pandoc-title.lua")))
+         "--lua-filter=" (expand-file-name "~/.emacs.d/bhg-init/pandoc-title.lua")))
   :hook
   (markdown-mode . outline-minor-mode))
 

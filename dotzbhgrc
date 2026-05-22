@@ -49,12 +49,10 @@ git_foreach() {
 
   for d in */.git; do
     local r=${d:h}
-    local b
-
-    b=$(git -C "$r" symbolic-ref --short HEAD 2>/dev/null || git -C "$r" rev-parse --short HEAD)
+    local b=$(git -C "$r" symbolic-ref --short HEAD 2>/dev/null || git -C "$r" rev-parse --short HEAD)
 
     print -P -- "%F{cyan}${line}%f"
-    print -P -- "%F{cyan} $r @ $b %f"
+    print -P -- "%F{cyan} $r @ %f%F{green}$b%f"
 
     git -C "$r" "$@"
     print

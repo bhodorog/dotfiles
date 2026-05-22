@@ -6,3 +6,5 @@
   :config
   ;; Use goimports instead of gofmt (recommended)
   (setq gofmt-command "goimports"))
+
+(provide 'bhg-init-go-mode)

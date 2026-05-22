@@ -40,3 +40,16 @@ set-environment -g 'SSH_AUTH_SOCK' ~/.ssh/ssh_auth_sock
 set -g mouse on
 # specific to emacs copy mode, for vi use s/copy-mode/copy-mode-vi/ below
 bind-key -T copy-mode MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "xclip -selection primary -filter | xclip -selection clipboard"
+
+
+## vibe coded with claude
+# Visual activity monitoring
+set -g monitor-activity on          # Monitor for activity
+set -g visual-activity on            # Show visual notification for activity
+set -g monitor-bell on               # Monitor for bell
+set -g visual-bell on                # Show visual notification for bell
+set -g bell-action any               # Bell in any window triggers notification
+
+# Highlight active window in status bar
+setw -g window-status-activity-style fg=yellow,bold
+setw -g window-status-bell-style fg=red,bold,blink
